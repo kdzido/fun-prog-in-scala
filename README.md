@@ -1,2 +1,2 @@
 # fun-prog-in-scala
-Functional Programming in Scala
+Learning FP by exercising the Functional Programming in Scala book
