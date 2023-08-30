@@ -59,6 +59,17 @@ object Chapter2 {
     go(0, 0, as.length - 1)
   }
 
+  /** [CHAP-2][EXERCISE-02] - check if Array[A] is sorted according to given comparison function */
+  def isSorted[A](as: Array[A], gt: (A, A) ⇒ Boolean): Boolean = {
+    @tailrec
+    def go(h: A, tail: Array[A]): Boolean = {
+      if (tail.isEmpty) true
+      else if (!gt(tail.head, h)) false
+      else go(tail.head, tail.tail)
+    }
+    if (as.isEmpty) true else go(as.head, as.tail)
+  }
+
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
   }

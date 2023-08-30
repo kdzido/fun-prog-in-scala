@@ -1,6 +1,6 @@
 package funscala.ch2
 
-import funscala.ch2.Chapter2.{abs, binarySearch, factorial, fib, formatAbs, formatResult, lessThan}
+import funscala.ch2.Chapter2.{abs, binarySearch, factorial, fib, formatAbs, formatResult, isSorted, lessThan}
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 class Chapter2Test extends AnyFunSuiteLike {
@@ -65,6 +65,33 @@ class Chapter2Test extends AnyFunSuiteLike {
   test("binary search should index of found element") {
     assert(binarySearch(Array(0.0), 0.0, _ > _) == 0)
     assert(binarySearch(Array(0.0, 1.0, 2.0, 3.0), 3.0, _ > _) == 3)
+  }
+
+  test("isSorted should check if sorted as per fn") {
+    val gt: (Int, Int) => Boolean = _ > _
+    val lt: (Int, Int) => Boolean = _ < _
+    val eq: (Int, Int) => Boolean = _ == _
+
+    assert(isSorted(Array[Int](), gt) == true)
+    assert(isSorted(Array[Int](), lt) == true)
+    assert(isSorted(Array[Int](), eq) == true)
+
+    assert(isSorted(Array(1), gt) == true)
+    assert(isSorted(Array(1), lt) == true)
+    assert(isSorted(Array(1), eq) == true)
+
+    assert(isSorted(Array(1, 2), gt) == true)
+    assert(isSorted(Array(1, 2), lt) == false)
+    assert(isSorted(Array(1, 2), eq) == false)
+
+    assert(isSorted(Array(1, 1), gt) == false)
+    assert(isSorted(Array(1, 1), lt) == false)
+    assert(isSorted(Array(1, 1), eq) == true)
+    assert(isSorted(Array(1, 1, 1), eq) == true)
+
+    assert(isSorted(Array(1, 2, 3, 5, 9), gt) == true)
+    assert(isSorted(Array(2, 1, 3, 5, 9), gt) == false)
+    assert(isSorted(Array(1, 2, 3, 9, 5), gt) == false)
   }
 
 }
