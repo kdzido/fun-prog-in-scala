@@ -6,9 +6,16 @@ object Chapter2 {
   /** Book's example */
   def abs(n: Int): Int = if (n < 0) -n else n
 
-  private def formatAbs(x: Int) = {
-    val msg = "The absolute value of %d is %d"
+  /** Book's example */
+  def formatAbs(x: Int) = {
+    val msg = "The absolute value of %d is %d."
     msg.format(x, abs(x))
+  }
+
+  /** Book's example */
+  def formatResult(name: String, n: Int, f: Int ⇒ Int) = {
+    val msg = "The %s of %d is %d."
+    msg.format(name, n, f(n))
   }
 
   /** Book's example */

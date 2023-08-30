@@ -6,7 +6,7 @@ lazy val scalatestVersion = "3.2.16"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "fun-prog-in-scala",
+    name := "fp-in-scala-book",
     libraryDependencies += "org.openjdk.jol" % "jol-core" % "0.17",
 
     libraryDependencies += "org.scalactic" %% "scalactic" % scalatestVersion,
