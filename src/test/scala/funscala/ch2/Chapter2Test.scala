@@ -55,16 +55,16 @@ class Chapter2Test extends AnyFunSuiteLike {
   }
 
   test("binary search should return -1 when element not found") {
-    assert(binarySearch(Array(), 3.14) == -1)
-    assert(binarySearch(Array(3.0), 3.14) == -1)
-    assert(binarySearch(Array(3.1), 3.14) == -1)
-    assert(binarySearch(Array(3.141), 3.14) == -1)
-    assert(binarySearch(Array(4.0), 3.14) == -1)
+    assert(binarySearch(Array[Double](), 3.14, _ > _) == -1)
+    assert(binarySearch(Array(3.0), 3.14, _ > _) == -1)
+    assert(binarySearch(Array(3.1), 3.14, _ > _) == -1)
+    assert(binarySearch(Array(3.141), 3.14, _ > _) == -1)
+    assert(binarySearch(Array(4.0), 3.14, _ > _) == -1)
   }
 
   test("binary search should index of found element") {
-    assert(binarySearch(Array(0.0), 0.0) == 0)
-    assert(binarySearch(Array(0.0, 1.0, 2.0, 3.0), 3.0) == 3)
+    assert(binarySearch(Array(0.0), 0.0, _ > _) == 0)
+    assert(binarySearch(Array(0.0, 1.0, 2.0, 3.0), 3.0, _ > _) == 3)
   }
 
 }
