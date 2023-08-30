@@ -1,6 +1,6 @@
 package funscala.ch2
 
-import funscala.ch2.Chapter2.{abs, factorial, fib, formatAbs, formatResult}
+import funscala.ch2.Chapter2.{abs, binarySearch, factorial, fib, formatAbs, formatResult, lessThan}
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 class Chapter2Test extends AnyFunSuiteLike {
@@ -48,6 +48,23 @@ class Chapter2Test extends AnyFunSuiteLike {
     assert(formatResult("increment5", 7, x ⇒ { val r = x + 1; r}) == "The increment5 of 7 is 8.")
   }
 
+  test("should check if less than n") {
+    assert(lessThan.apply(1, 2) == true)
+    assert(lessThan.apply(1, 1) == false)
+    assert(lessThan.apply(1, 0) == false)
+  }
 
+  test("binary search should return -1 when element not found") {
+    assert(binarySearch(Array(), 3.14) == -1)
+    assert(binarySearch(Array(3.0), 3.14) == -1)
+    assert(binarySearch(Array(3.1), 3.14) == -1)
+    assert(binarySearch(Array(3.141), 3.14) == -1)
+    assert(binarySearch(Array(4.0), 3.14) == -1)
+  }
+
+  test("binary search should index of found element") {
+    assert(binarySearch(Array(0.0), 0.0) == 0)
+    assert(binarySearch(Array(0.0, 1.0, 2.0, 3.0), 3.0) == 3)
+  }
 
 }
