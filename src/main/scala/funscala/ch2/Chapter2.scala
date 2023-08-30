@@ -79,6 +79,12 @@ object Chapter2 {
   /** [CHAP-2][EXERCISE-05] - implement uncurry */
   def uncurry[A,B,C](f: A ⇒ B ⇒ C): (A, B) ⇒ C = (a, b) ⇒ f(a)(b)
 
+  /** [CHAP-2][EXERCISE-06] - implement compose */
+  def compose[A,B,C](f: B ⇒ C, g: A ⇒ B): A ⇒ C = (a: A) ⇒ f(g(a))
+
+  /** [CHAP-2][EXERCISE-06] - implement compose */
+  def andThen[A,B,C](f: A ⇒ B, g: B ⇒ C): A ⇒ C = compose(g, f)
+
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
   }

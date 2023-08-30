@@ -1,6 +1,6 @@
 package funscala.ch2
 
-import funscala.ch2.Chapter2.{abs, binarySearch, curry, factorial, fib, formatAbs, formatResult, isSorted, lessThan, partial1, uncurry}
+import funscala.ch2.Chapter2.{abs, andThen, binarySearch, compose, curry, factorial, fib, formatAbs, formatResult, isSorted, lessThan, partial1, uncurry}
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 class Chapter2Test extends AnyFunSuiteLike {
@@ -118,10 +118,35 @@ class Chapter2Test extends AnyFunSuiteLike {
     def sum: (Int, Int) ⇒ Int = _ + _
     def sumCurried = curry(sum)
     def sumUncurried = uncurry(sumCurried)
-    
+
     assert(sumUncurried(1, 2) == 3)
     assert(sumUncurried(2, 3) == 5)
   }
 
+  test("should compose two functions") {
+    def incr: (Int) ⇒ Int = _ + 1
+    def square: (Int) ⇒ Int = n ⇒ n * n
+
+    //    incr(square(2)) == 5
+    val incrementSquaredArg = compose(incr, square)
+    //    square(incr(2) * incr(2)) == 9
+    val squareIncrementedArg = compose(square, incr)
+
+    assert(incrementSquaredArg(2) == 5)
+    assert(squareIncrementedArg(2) == 9)
+  }
+
+  test("should compose two functions with andThen") {
+    def incr: (Int) ⇒ Int = _ + 1
+    def square: (Int) ⇒ Int = n ⇒ n * n
+
+    //    square(incr(2) * incr(2)) == 9
+    val squareIncrementedArg = andThen(incr, square)
+    //    incr(square(2)) == 5
+    val incrementSquaredArg = andThen(square, incr)
+
+    assert(squareIncrementedArg(2) == 9)
+    assert(incrementSquaredArg(2) == 5)
+  }
 
 }
