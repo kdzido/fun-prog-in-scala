@@ -1,6 +1,6 @@
 package funscala.ch2
 
-import funscala.ch2.Chapter2.{abs, binarySearch, factorial, fib, formatAbs, formatResult, isSorted, lessThan}
+import funscala.ch2.Chapter2.{abs, binarySearch, curry, factorial, fib, formatAbs, formatResult, isSorted, lessThan, partial1, uncurry}
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 class Chapter2Test extends AnyFunSuiteLike {
@@ -96,8 +96,8 @@ class Chapter2Test extends AnyFunSuiteLike {
 
   test("should do partial application") {
     def sum: (Int, Int) ⇒ Int = _ + _
-    def incrBy1 = Chapter2.partial1(1, sum)
-    def incrBy2 = Chapter2.partial1(2, sum)
+    def incrBy1 = partial1(1, sum)
+    def incrBy2 = partial1(2, sum)
 
     assert(incrBy1(1) == 2)
     assert(incrBy1(2) == 3)
@@ -108,10 +108,20 @@ class Chapter2Test extends AnyFunSuiteLike {
 
   test("should curry function") {
     def sum: (Int, Int) ⇒ Int = _ + _
-    def sumCurried = Chapter2.curry(sum)
+    def sumCurried = curry(sum)
 
     assert(sumCurried(1)(2) == 3)
     assert(sumCurried(2)(3) == 5)
   }
+
+  test("should uncurry function") {
+    def sum: (Int, Int) ⇒ Int = _ + _
+    def sumCurried = curry(sum)
+    def sumUncurried = uncurry(sumCurried)
+    
+    assert(sumUncurried(1, 2) == 3)
+    assert(sumUncurried(2, 3) == 5)
+  }
+
 
 }
