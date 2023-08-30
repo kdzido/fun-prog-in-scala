@@ -94,4 +94,16 @@ class Chapter2Test extends AnyFunSuiteLike {
     assert(isSorted(Array(1, 2, 3, 9, 5), gt) == false)
   }
 
+  test("should do partial application") {
+    def sum: (Int, Int) ⇒ Int = _ + _
+    def incrBy1 = Chapter2.partial1(1, sum)
+    def incrBy2 = Chapter2.partial1(2, sum)
+
+    assert(incrBy1(1) == 2)
+    assert(incrBy1(2) == 3)
+
+    assert(incrBy2(5) == 7)
+    assert(incrBy2(6) == 8)
+  }
+
 }

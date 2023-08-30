@@ -70,6 +70,9 @@ object Chapter2 {
     if (as.isEmpty) true else go(as.head, as.tail)
   }
 
+  /** [CHAP-2][EXERCISE-03] - implement partial1 */
+  def partial1[A,B,C](a: A, f: (A, B) ⇒ C): B ⇒ C = (b: B) ⇒ f(a, b)
+
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
   }
