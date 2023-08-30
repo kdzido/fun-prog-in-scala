@@ -106,4 +106,12 @@ class Chapter2Test extends AnyFunSuiteLike {
     assert(incrBy2(6) == 8)
   }
 
+  test("should curry function") {
+    def sum: (Int, Int) ⇒ Int = _ + _
+    def sumCurried = Chapter2.curry(sum)
+
+    assert(sumCurried(1)(2) == 3)
+    assert(sumCurried(2)(3) == 5)
+  }
+
 }
