@@ -1,5 +1,7 @@
 package funscala.datastructures
 
+import scala.annotation.tailrec
+
 /** Book's example */
 sealed trait List[+A]
 /** Data constructor of List */
@@ -26,6 +28,12 @@ object List {
   def tail[A](as: List[A]): List[A] = as match {
     case Nil ⇒ Nil
     case Cons(h, t) ⇒ t
+  }
+
+  @tailrec
+  def drop[A](as: List[A], n: Int): List[A] = as match {
+    case Nil ⇒ Nil
+    case Cons(h, t) ⇒ if (n <= 0) as else drop(t, n-1)
   }
 
   /** Book's example */

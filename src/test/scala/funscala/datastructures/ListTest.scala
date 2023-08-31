@@ -1,6 +1,5 @@
 package funscala.datastructures
 
-import funscala.datastructures.List.tail
 import org.scalatest.flatspec.AnyFlatSpec
 
 class ListTest extends AnyFlatSpec {
@@ -40,10 +39,30 @@ class ListTest extends AnyFlatSpec {
   }
 
   /** [CHAP-3][EXERCISE-02] impl tail of List */
-  "List" should "have tail" in {
-    assert(tail(List()) == Nil)
-    assert(tail(List(1)) == Nil)
-    assert(tail(List(1,2,3)) == List(2,3))
+  "List" should "return tail" in {
+    assert(List.tail(List()) == Nil)
+    assert(List.tail(List(1)) == Nil)
+    assert(List.tail(List(1,2,3)) == List(2,3))
+  }
+
+  /** [CHAP-3][EXERCISE-03] impl drop n elements of List */
+  "List" should "drop n elements" in {
+    assert(List.drop(List(), 0) == List())
+    assert(List.drop(List(1), 0) == List(1))
+    assert(List.drop(List(1,2,3), 0) == List(1,2,3))
+
+    assert(List.drop(List(), -1) == List())
+    assert(List.drop(List(1), -1) == List(1))
+    assert(List.drop(List(1, 2, 3), -1) == List(1, 2, 3))
+
+    assert(List.drop(List(), 1) == List())
+    assert(List.drop(List(1), 1) == List())
+    assert(List.drop(List(1), 2) == List())
+
+    assert(List.drop(List(1,2,3), 1) == List(2,3))
+    assert(List.drop(List(1,2,3), 2) == List(3))
+    assert(List.drop(List(1,2,3), 3) == List())
+    assert(List.drop(List(1,2,3), 4) == List())
   }
 
 }
