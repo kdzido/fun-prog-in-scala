@@ -6,21 +6,30 @@ class ListTest extends AnyFlatSpec {
 
   "An empty immutable list" should "have always sum of 0" in {
     assert(List.sum(Nil) == 0)
+    assert(List.sum2(Nil) == 0)
   }
 
   it should "have always product of 1.0" in {
     assert(List.product(Nil) == 1.0)
+    assert(List.product2(Nil) == 1.0)
   }
 
   "Non-empty immutable list" should "calculate sum of its elements" in {
     assert(List.sum(Cons(1, Nil)) == 1)
     assert(List.sum(Cons(1, Cons(2, Nil))) == 3)
+
+    assert(List.sum2(Cons(1, Nil)) == 1)
+    assert(List.sum2(Cons(1, Cons(2, Nil))) == 3)
   }
 
   it should "calculate product of its elements" in {
     assert(List.product(Cons(1.0, Nil)) == 1.0)
     assert(List.product(Cons(1.0, Cons(2.0, Cons(0.0, Nil)))) == 0.0)
     assert(List.product(Cons(1.0, Cons(2.0, Cons(3.0, Nil)))) == 6.0)
+
+    assert(List.product2(Cons(1.0, Nil)) == 1.0)
+    assert(List.product2(Cons(1.0, Cons(2.0, Cons(0.0, Nil)))) == 0.0)
+    assert(List.product2(Cons(1.0, Cons(2.0, Cons(3.0, Nil)))) == 6.0)
   }
 
   "Pure variadic apply" should "create empty immutable list" in {
@@ -99,6 +108,21 @@ class ListTest extends AnyFlatSpec {
 
     assert(List.init(List(1,2)) == List(1))
     assert(List.init(List(1,2,3)) == List(1,2))
+  }
+
+  "Fold right of List" should "return sum of elements" in {
+    val sum: (Int, Int) ⇒ Int = _ + _
+    assert(List.foldRight(List[Int](), 0)(sum) == 0)
+    assert(List.foldRight(List[Int](1), 0)(sum) == 1)
+    assert(List.foldRight(List[Int](1,2,0), 0)(sum) == 3)
+  }
+
+  it should "return product of elements" in {
+    val product: (Double, Double) ⇒ Double = _ * _
+    assert(List.foldRight(List[Double](), 1.0)(product) == 1.0)
+    assert(List.foldRight(List(1.0), 1.0)(product) == 1.0)
+    assert(List.foldRight(List(1.0, 2.0, 3.0), 1.0)(product) == 6.0)
+    assert(List.foldRight(List(1.0, 2.0, 0.0), 1.0)(product) == 0.0)
   }
 
 }

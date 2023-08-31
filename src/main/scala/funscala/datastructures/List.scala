@@ -20,9 +20,24 @@ object List {
   /** Book's example */
   def product(ds: List[Double]): Double = ds match {
     case Nil ⇒ 1.0
-    case Cons(0.0, _) ⇒ 0.0
+//    case Cons(0.0, _) ⇒ 0.0   // 1) 0.0 cannot short-circuit as it break abstract types of function 2) checking eq of elems requires another function
     case Cons(x, xs) ⇒ x * product(xs)
   }
+
+  /** Book's example. Generalization of sum and product functions.
+   * NOTE: non tail-recursive
+   */
+  def foldRight[A,B](as: List[A], z: B)(f: (A,B) ⇒ B): B = as match {
+    case Nil ⇒ z
+    case Cons(x, xs) ⇒ f(x, foldRight(xs, z)(f))
+  }
+
+  /** Book's example.*/
+  def sum2(ints: List[Int]): Int = foldRight(ints, 0)(_ + _)
+
+  /** Book's example.*/
+  def product2(ds: List[Double]): Double = foldRight(ds, 1.0)(_ * _)
+
 
   /** [CHAP-3][EXERCISE-02] impl tail of List */
   def tail[A](as: List[A]): List[A] = as match {
