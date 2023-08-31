@@ -127,6 +127,23 @@ class ListTest extends AnyFlatSpec {
     assert(List.foldRight(List(1.0, 2.0, 0.0), 1.0)(product) == 0.0)
   }
 
+  // [CHAP-3][EXERCISE-10] implement tail-recursive foldLeft
+  "Fold left of List" should "return sum of elements" in {
+    val sum: (Int, Int) ⇒ Int = _ + _
+    assert(List.foldLeft(List[Int](), 0)(sum) == 0)
+    assert(List.foldLeft(List[Int](1), 0)(sum) == 1)
+    assert(List.foldLeft(List[Int](1, 2, 0), 0)(sum) == 3)
+  }
+
+  // [CHAP-3][EXERCISE-10] implement tail-recursive foldLeft
+  it should "return product of elements" in {
+    val product: (Double, Double) ⇒ Double = _ * _
+    assert(List.foldLeft(List[Double](), 1.0)(product) == 1.0)
+    assert(List.foldLeft(List(1.0), 1.0)(product) == 1.0)
+    assert(List.foldLeft(List(1.0, 2.0, 3.0), 1.0)(product) == 6.0)
+    assert(List.foldLeft(List(1.0, 2.0, 0.0), 1.0)(product) == 0.0)
+  }
+
   /** [CHAP-3][EXERCISE-07] Question:
    * Can product using foldRight immediately halt the recursion and
    * return 0.0 if it encounters 0.0 ? */

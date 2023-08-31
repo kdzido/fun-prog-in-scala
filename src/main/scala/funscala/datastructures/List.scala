@@ -42,6 +42,13 @@ object List {
      */
   }
 
+  /** [CHAP-3][EXERCISE-10] implement tail-recursive foldLeft */
+  @tailrec
+  def foldLeft[A, B](as: List[A], z: B)(f: (B, A) ⇒ B): B = as match {
+    case Nil ⇒ z
+    case Cons(h, t) ⇒ foldLeft(t, f(z, h))(f)
+  }
+
   /** Book's example.*/
   def sum2(ints: List[Int]): Int = foldRight(ints, 0)(_ + _)
 
