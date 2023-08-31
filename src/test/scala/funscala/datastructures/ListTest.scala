@@ -160,4 +160,18 @@ class ListTest extends AnyFlatSpec {
     assert(accessedA2.get() == true)
   }
 
+  /** [CHAP-3][EXERCISE-08] Question:
+   * See what happens when you pass Nil and Cons themselves to
+   * foldRight like this:
+   * foldRight(List(1,2,3) Nil:List[Int])(Cons(_,_)) */
+  "Fold right List data constructors" should "return reversed list" in {
+    // check what happens when
+    assert(List.foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)) == Cons(1, Cons(2, Cons(3, Nil))))
+    assert(Cons(1, Cons(2, Cons(3, Nil))) == List(1,2,3))
+
+    // Answer:
+    // New list can be constructed starting from last element of input list.
+    // Singly-linked list can be constructed from the end.
+  }
+
 }
