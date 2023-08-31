@@ -65,4 +65,14 @@ class ListTest extends AnyFlatSpec {
     assert(List.drop(List(1,2,3), 4) == List())
   }
 
+  /** [CHAP-3][EXERCISE-04] impl dropWhile on List */
+  "List" should "drop while precondition is met" in {
+    assert(List.dropWhile(List[Int]())(_ <= 1) == List())
+    assert(List.dropWhile(List(1,2,3))(_ <= 0) == List(1,2,3))
+    assert(List.dropWhile(List(1,2,3))(_ <= 1) == List(2,3))
+    assert(List.dropWhile(List(1,2,3))(_ <= 2) == List(3))
+    assert(List.dropWhile(List(1,2,3))(_ <= 3) == List())
+    assert(List.dropWhile(List(1,2,3))(_ <= 4) == List())
+  }
+
 }

@@ -30,12 +30,19 @@ object List {
     case Cons(h, t) ⇒ t
   }
 
+  /** [CHAP-3][EXERCISE-03] impl drop n elements of List */
   @tailrec
   def drop[A](as: List[A], n: Int): List[A] = as match {
     case Nil ⇒ Nil
     case Cons(h, t) ⇒ if (n <= 0) as else drop(t, n-1)
   }
 
+  /** [CHAP-3][EXERCISE-04] impl dropWhile on List */
+  @tailrec
+  def dropWhile[A](as: List[A])(f: A ⇒ Boolean): List[A] = as match {
+    case Nil ⇒ Nil
+    case Cons(h, t) ⇒ if (f(h)) dropWhile(t)(f) else as
+  }
   /** Book's example */
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
