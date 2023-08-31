@@ -170,8 +170,15 @@ class ListTest extends AnyFlatSpec {
     assert(Cons(1, Cons(2, Cons(3, Nil))) == List(1,2,3))
 
     // Answer:
-    // New list can be constructed starting from last element of input list.
+    // New list can be constructed in one go only when starting from last element of input list.
     // Singly-linked list can be constructed from the end.
+  }
+
+  // [CHAP-3][EXERCISE-09] compute list's length using foldRight
+  "Length of List" should "number of elements in list" in {
+    assert(List.length(List[Int]()) == 0)
+    assert(List.length(List(5)) == 1)
+    assert(List.length(List(5,5,5)) == 3)
   }
 
 }

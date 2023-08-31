@@ -38,7 +38,7 @@ object List {
      * 1) Existing abstract foldRight function signature does not allow to implement
      * short-circuiting for a special value.
      * What is missing in comparison function, and special value to be returned.
-     * 2) Currently foldRight evaluates all elements of List eagerly. 
+     * 2) Currently foldRight evaluates all elements of List eagerly.
      */
   }
 
@@ -48,6 +48,8 @@ object List {
   /** Book's example.*/
   def product2(ds: List[Double]): Double = foldRight(ds, 1.0)(_ * _)
 
+  /** [CHAP-3][EXERCISE-09] compute list's length using foldRight */
+  def length[A](as: List[A]): Int = foldRight(as, 0)((_, b) ⇒ b+1)
 
   /** [CHAP-3][EXERCISE-02] impl tail of List */
   def tail[A](as: List[A]): List[A] = as match {
