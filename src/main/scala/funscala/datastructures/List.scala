@@ -22,6 +22,12 @@ object List {
     case Cons(x, xs) ⇒ x * product(xs)
   }
 
+  /** [CHAP-3][EXERCISE-02] impl tail of List */
+  def tail[A](as: List[A]): List[A] = as match {
+    case Nil ⇒ Nil
+    case Cons(h, t) ⇒ t
+  }
+
   /** Book's example */
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil

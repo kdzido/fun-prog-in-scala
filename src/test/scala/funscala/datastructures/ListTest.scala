@@ -1,5 +1,6 @@
 package funscala.datastructures
 
+import funscala.datastructures.List.tail
 import org.scalatest.flatspec.AnyFlatSpec
 
 class ListTest extends AnyFlatSpec {
@@ -36,6 +37,13 @@ class ListTest extends AnyFlatSpec {
   /** [CHAP-3][EXERCISE-01] pattern matching result */
   "The x pattern matching expr" should "return" in {
     assert(List.x == 3)
+  }
+
+  /** [CHAP-3][EXERCISE-02] impl tail of List */
+  "List" should "have tail" in {
+    assert(tail(List()) == Nil)
+    assert(tail(List(1)) == Nil)
+    assert(tail(List(1,2,3)) == List(2,3))
   }
 
 }
