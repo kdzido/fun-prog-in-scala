@@ -51,6 +51,15 @@ object List {
   }
 
 
+  /** Book's example.
+   * NOTE: non tail-recursive
+   */
+  def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
+    case Nil ⇒ a2
+    case Cons(h1, t1) ⇒ Cons(h1, append(t1, a2))
+  }
+
+
   /** Book's example */
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil

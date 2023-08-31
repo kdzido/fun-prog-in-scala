@@ -80,4 +80,17 @@ class ListTest extends AnyFlatSpec {
     assert(List.setHead(List[Int](), 5) == List())
     assert(List.setHead(List(1, 2, 3), 5) == List(5,2,3))
   }
+
+  "Append of two Lists" should "return combined list" in {
+    assert(List.append(List(), List()) == List())
+    assert(List.append(List(), List(1)) == List(1))
+    assert(List.append(List(), List(1,2)) == List(1,2))
+
+    assert(List.append(List(1), List()) == List(1))
+    assert(List.append(List(1,2), List()) == List(1,2))
+
+    assert(List.append(List(1,2), List(3)) == List(1,2,3))
+    assert(List.append(List(1,2), List(3,4)) == List(1,2,3,4))
+  }
+
 }
