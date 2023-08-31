@@ -59,6 +59,14 @@ object List {
     case Cons(h1, t1) ⇒ Cons(h1, append(t1, a2))
   }
 
+  /** [CHAP-3][EXERCISE-06] impl init on List.
+   * NOTE: non tail-recursive
+   */
+  def init[A](as: List[A]): List[A] = as match {
+    case Nil ⇒ Nil
+    case Cons(h, Nil) ⇒ Nil
+    case Cons(h, t) ⇒ Cons(h, init(t))
+  }
 
   /** Book's example */
   def apply[A](as: A*): List[A] =
