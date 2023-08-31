@@ -43,6 +43,14 @@ object List {
     case Nil ⇒ Nil
     case Cons(h, t) ⇒ if (f(h)) dropWhile(t)(f) else as
   }
+
+  /** [CHAP-3][EXERCISE-05] impl setHead on List */
+  def setHead[A](as: List[A], newHead: A): List[A] = as match {
+    case Nil ⇒ Nil
+    case Cons(h, t) ⇒ Cons(newHead, t)
+  }
+
+
   /** Book's example */
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil

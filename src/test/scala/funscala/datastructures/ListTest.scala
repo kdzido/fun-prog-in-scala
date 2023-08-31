@@ -39,14 +39,14 @@ class ListTest extends AnyFlatSpec {
   }
 
   /** [CHAP-3][EXERCISE-02] impl tail of List */
-  "List" should "return tail" in {
+  "Tail on List" should "drop head" in {
     assert(List.tail(List()) == Nil)
     assert(List.tail(List(1)) == Nil)
     assert(List.tail(List(1,2,3)) == List(2,3))
   }
 
   /** [CHAP-3][EXERCISE-03] impl drop n elements of List */
-  "List" should "drop n elements" in {
+  "Drop on List" should "drop n elements" in {
     assert(List.drop(List(), 0) == List())
     assert(List.drop(List(1), 0) == List(1))
     assert(List.drop(List(1,2,3), 0) == List(1,2,3))
@@ -66,7 +66,7 @@ class ListTest extends AnyFlatSpec {
   }
 
   /** [CHAP-3][EXERCISE-04] impl dropWhile on List */
-  "List" should "drop while precondition is met" in {
+  "Drop while on List" should "drop as long as precondition is met" in {
     assert(List.dropWhile(List[Int]())(_ <= 1) == List())
     assert(List.dropWhile(List(1,2,3))(_ <= 0) == List(1,2,3))
     assert(List.dropWhile(List(1,2,3))(_ <= 1) == List(2,3))
@@ -75,4 +75,9 @@ class ListTest extends AnyFlatSpec {
     assert(List.dropWhile(List(1,2,3))(_ <= 4) == List())
   }
 
+  /** [CHAP-3][EXERCISE-05] impl setHead on List */
+  "Set head on List" should "replace head element if present" in {
+    assert(List.setHead(List[Int](), 5) == List())
+    assert(List.setHead(List(1, 2, 3), 5) == List(5,2,3))
+  }
 }
