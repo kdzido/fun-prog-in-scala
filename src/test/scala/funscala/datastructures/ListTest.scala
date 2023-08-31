@@ -2,6 +2,8 @@ package funscala.datastructures
 
 import org.scalatest.flatspec.AnyFlatSpec
 
+import java.util.concurrent.atomic.AtomicBoolean
+
 class ListTest extends AnyFlatSpec {
 
   "An empty immutable list" should "have always sum of 0" in {
@@ -123,6 +125,39 @@ class ListTest extends AnyFlatSpec {
     assert(List.foldRight(List(1.0), 1.0)(product) == 1.0)
     assert(List.foldRight(List(1.0, 2.0, 3.0), 1.0)(product) == 6.0)
     assert(List.foldRight(List(1.0, 2.0, 0.0), 1.0)(product) == 0.0)
+  }
+
+  /** [CHAP-3][EXERCISE-07] Question:
+   * Can product using foldRight immediately halt the recursion and
+   * return 0.0 if it encounters 0.0 ? */
+  "Product using foldRight" should "halt recursion when encounters 0.0" in {
+    // given:
+    val accessedA0 = AtomicBoolean(false)
+    val accessedA1 = AtomicBoolean(false)
+    val accessedA2 = AtomicBoolean(false)
+
+    val a0: () ⇒ Double = {
+      accessedA0.set(true)
+      () ⇒ 0.0
+    }
+    val a1: () ⇒ Double = {
+      accessedA1.set(true)
+      () ⇒ 1.0
+    }
+    val a2: () ⇒ Double = {
+      accessedA2.set(true)
+      () ⇒ 2.0
+    }
+
+    // when:
+    val inputs = List[() ⇒ Double](a1, a0, a2)
+    val result = List.foldRight(inputs, 1.0)(_() * _)
+    // then:
+    assert(result == 0.0)
+    // all list's elements evaluated
+    assert(accessedA0.get() == true)
+    assert(accessedA1.get() == true)
+    assert(accessedA2.get() == true)
   }
 
 }

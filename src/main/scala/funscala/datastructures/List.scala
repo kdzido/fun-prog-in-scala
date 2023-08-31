@@ -30,6 +30,16 @@ object List {
   def foldRight[A,B](as: List[A], z: B)(f: (A,B) ⇒ B): B = as match {
     case Nil ⇒ z
     case Cons(x, xs) ⇒ f(x, foldRight(xs, z)(f))
+
+    /* [CHAP-3][EXERCISE-07] Question:
+     * Can product using foldRight immediately halt the recursion and
+     * return 0.0 if it encounters 0.0 ? */
+    /* Answer:
+     * 1) Existing abstract foldRight function signature does not allow to implement
+     * short-circuiting for a special value.
+     * What is missing in comparison function, and special value to be returned.
+     * 2) Currently foldRight evaluates all elements of List eagerly. 
+     */
   }
 
   /** Book's example.*/
