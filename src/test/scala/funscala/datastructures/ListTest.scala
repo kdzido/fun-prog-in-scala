@@ -33,8 +33,9 @@ class ListTest extends AnyFlatSpec {
     assert(List(1, 2, 3) == Cons(1, Cons(2, Cons(3, Nil))))
   }
 
-
-//  "cos"
-//  ""
+  /** [CHAP-3][EXERCISE-01] pattern matching result */
+  "The x pattern matching expr" should "return" in {
+    assert(List.x == 3)
+  }
 
 }
