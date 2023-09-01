@@ -49,14 +49,21 @@ object List {
     case Cons(h, t) ⇒ foldLeft(t, f(z, h))(f)
   }
 
+  def reverse[A](as: List[A]): List[A] = {
+    List.foldLeft(as, Nil: List[A])((t, h) ⇒ Cons(h, t))
+  }
+
   /** [CHAP-3][EXERCISE-13] implement foldRight in terms of foldLeft (hard).
    * NOTE: O(2n), using tail-recursive functions only */
   def foldRight2[A,B](as: List[A], z: B)(f: (A,B) ⇒ B): B = {
-    def reverse(as: List[A]): List[A] = {
-      List.foldLeft(as, Nil:List[A])((t, h) ⇒ Cons(h, t))
-    }
     foldLeft(reverse(as), z)((b, a) ⇒ f(a,b))
   }
+
+/** [CHAP-3][EXERCISE-16] transform list of ints by adding 1 to each element.
+ * [CHAP-3][EXERCISE-17] transform list of double to strings.
+ * [CHAP-3][EXERCISE-18] generalize to function map */
+  def map[A,B](as: List[A])(f: A ⇒ B): List[B] =
+    reverse(foldLeft(as, Nil:List[B])((b,a) ⇒ Cons(f(a), b)))
 
   /** Book's example.*/
   def sum2(ints: List[Int]): Int = foldRight(ints, 0)(_ + _)

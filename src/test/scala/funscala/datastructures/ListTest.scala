@@ -239,4 +239,20 @@ class ListTest extends AnyFlatSpec {
     assert(List.length(List(5,5,5)) == 3)
   }
 
+  // [CHAP-3][EXERCISE-16] transform list of ints by adding 1 to each element
+  // [CHAP-3][EXERCISE-18] generalize to function map
+  "Mapping of List" should "return List of Ints with each elements increased by 1" in {
+    assert(List.map(List[Int]())(_ + 1) == List[Int]())
+    assert(List.map(List(1))(_ + 1) == List(2))
+    assert(List.map(List(1,2,3))(_ + 1) == List(2,3,4))
+  }
+
+  // [CHAP-3][EXERCISE-17] transform list of double to strings.
+  // [CHAP-3][EXERCISE-18] generalize to function map
+  it should "return List of Strings representing Doubles" in {
+    assert(List.map(List[Double]())(_.toString) == List[Int]())
+    assert(List.map(List(1.0))(_.toString) == List("1.0"))
+    assert(List.map(List(1.0, 2.0, 3.0))(_.toString) == List("1.0", "2.0", "3.0"))
+  }
+
 }
