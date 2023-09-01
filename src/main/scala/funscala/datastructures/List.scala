@@ -107,6 +107,10 @@ object List {
   def append2[A](a1: List[A], a2: List[A]): List[A] =
     foldRight2(a1, a2)((e, acc) ⇒ Cons(e, acc))
 
+  /** [CHAP-3][EXERCISE-15] impl concatenation of list of lists in terms of existing functions (hard).
+   * Complexity should be linear. */
+  def flatConcat[A](l: List[List[A]]): List[A] =
+    foldRight2(l, Nil:List[A])((elem, acc) ⇒ append2(elem, acc))
 
   /** [CHAP-3][EXERCISE-06] impl init on List.
    * NOTE: non tail-recursive
@@ -116,6 +120,7 @@ object List {
     case Cons(h, Nil) ⇒ Nil
     case Cons(h, t) ⇒ Cons(h, init(t))
   }
+
 
   /** Book's example */
   def apply[A](as: A*): List[A] =

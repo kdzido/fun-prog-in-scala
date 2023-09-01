@@ -117,6 +117,23 @@ class ListTest extends AnyFlatSpec {
     assert(List.append2(List(1,2), List(3,4)) == List(1,2,3,4))
   }
 
+  // [CHAP-3][EXERCISE-15] impl concatenation of list of lists in terms of existing functions (hard)
+  "Concatenation of List of Lists" should "return flat list of all Lists' elements" in {
+    assert(List.flatConcat(List()) == List())
+    assert(List.flatConcat(List(List())) == List())
+    assert(List.flatConcat(List(List(), List())) == List())
+    assert(List.flatConcat(List(List[Int](), List(1))) == List(1))
+    assert(List.flatConcat(List(List(1), List[Int]())) == List(1))
+
+    assert(List.flatConcat(List(List[Int](), List(1,2))) == List(1,2))
+    assert(List.flatConcat(List(List(1,2), List[Int]())) == List(1,2))
+
+    assert(List.flatConcat(List(List(1,2), List(3,4))) == List(1,2,3,4))
+    assert(List.flatConcat(List(List(1,2), List(3,4), List[Int]())) == List(1,2,3,4))
+    assert(List.flatConcat(List(List[Int](), List(1,2), List(3,4))) == List(1,2,3,4))
+    assert(List.flatConcat(List(List(1,2), List[Int](), List(3,4), List[Int]())) == List(1,2,3,4))
+  }
+
   "Init of List" should "return all except last element" in {
     assert(List.init(List()) == List())
     assert(List.init(List(1)) == List())
