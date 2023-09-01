@@ -255,4 +255,21 @@ class ListTest extends AnyFlatSpec {
     assert(List.map(List(1.0, 2.0, 3.0))(_.toString) == List("1.0", "2.0", "3.0"))
   }
 
+  // [CHAP-3][EXERCISE-19] implement filter function on List
+  "Filtering of List" should "return only element matching predicate" in {
+    val evenNumbers: Int ⇒ Boolean = _ % 2 == 0
+    val oddNumbers: Int ⇒ Boolean = _ % 2 != 0
+    assert(List.filter(List[Int]())(evenNumbers) == List[Int]())
+    assert(List.filter(List[Int]())(oddNumbers) == List[Int]())
+
+    assert(List.filter(List(0))(evenNumbers) == List[Int](0))
+    assert(List.filter(List(0))(oddNumbers) == List[Int]())
+
+    assert(List.filter(List(0,1))(evenNumbers) == List[Int](0))
+    assert(List.filter(List(0,1))(oddNumbers) == List[Int](1))
+
+    assert(List.filter(List(0,1,2,3,4,5))(evenNumbers) == List[Int](0,2,4))
+    assert(List.filter(List(0,1,2,3,4,5))(oddNumbers) == List[Int](1,3,5))
+  }
+
 }
