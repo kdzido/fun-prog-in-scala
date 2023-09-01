@@ -135,6 +135,17 @@ class ListTest extends AnyFlatSpec {
     assert(List.foldLeft(List[Int](1, 2, 0), 0)(sum) == 3)
   }
 
+  // [CHAP-3][EXERCISE-13] implement foldRight in terms of foldLeft (hard)
+  "Right folded List" should "be implemented in terms of left fold of List" in {
+    // original implementation, processing order impacts result
+    assert(List.foldRight(List(3, 2, 1), 0)((a, b) ⇒ a - (b * b)) == 2)
+    assert(List.foldRight(List(1, 2, 3), 0)((a, b) ⇒ a - (b * b)) == -48)
+
+    // new implementation, processing order impacts result
+    assert(List.foldRight2(List(3, 2, 1), 0)((a, b) ⇒ a - (b * b)) == 2)
+    assert(List.foldRight2(List(1, 2, 3), 0)((a, b) ⇒ a - (b * b)) == -48)
+  }
+
   // [CHAP-3][EXERCISE-10] implement tail-recursive foldLeft
   it should "return product of elements" in {
     val product: (Double, Double) ⇒ Double = _ * _

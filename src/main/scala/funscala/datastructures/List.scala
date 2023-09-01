@@ -49,6 +49,29 @@ object List {
     case Cons(h, t) ⇒ foldLeft(t, f(z, h))(f)
   }
 
+  /** [CHAP-3][EXERCISE-13] implement foldRight in terms of foldLeft (hard).
+   * NOTE: O(2n), using tail-recursive functions only */
+  def foldRight2[A,B](as: List[A], z: B)(f: (A,B) ⇒ B): B = {
+    def reverse(as: List[A]): List[A] = {
+      List.foldLeft(as, Nil:List[A])((t, h) ⇒ Cons(h, t))
+    }
+    foldLeft(reverse(as), z)((b, a) ⇒ f(a,b))
+  }
+
+
+  /** [CHAP-3][EXERCISE-13] implement foldRight in terms of foldLeft (hard).
+   * NOTE: O(n + n^2), not effective */
+  def foldLeft2[A, B](as: List[A], z: B)(f: (B, A) ⇒ B): B = {
+//    def reverse(as: List[A]): List[A] = {
+//      List.foldLeft(as, Nil: List[A])((t, h) ⇒ Cons(h, t))
+      List.foldRight(as, Nil: List[A])((h, t) ⇒ Cons(h, t))
+//    }
+    foldRight(as, z)((a, b) ⇒ f(b, a))
+  }
+
+  /** [CHAP-3][EXERCISE-13] implement foldLeft in terms of foldRight */
+
+
   /** Book's example.*/
   def sum2(ints: List[Int]): Int = foldRight(ints, 0)(_ + _)
 
