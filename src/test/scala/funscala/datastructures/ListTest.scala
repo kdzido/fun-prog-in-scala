@@ -104,6 +104,19 @@ class ListTest extends AnyFlatSpec {
     assert(List.append(List(1,2), List(3,4)) == List(1,2,3,4))
   }
 
+  // [CHAP-3][EXERCISE-14] impl append in terms of foldRight or foldLeft
+  "Append of two Lists in terms of foldRight2" should "return combined list" in {
+    assert(List.append2(List(), List()) == List())
+    assert(List.append2(List(), List(1)) == List(1))
+    assert(List.append2(List(), List(1,2)) == List(1,2))
+
+    assert(List.append2(List(1), List()) == List(1))
+    assert(List.append2(List(1,2), List()) == List(1,2))
+
+    assert(List.append2(List(1,2), List(3)) == List(1,2,3))
+    assert(List.append2(List(1,2), List(3,4)) == List(1,2,3,4))
+  }
+
   "Init of List" should "return all except last element" in {
     assert(List.init(List()) == List())
     assert(List.init(List(1)) == List())

@@ -102,6 +102,12 @@ object List {
     case Cons(h1, t1) ⇒ Cons(h1, append(t1, a2))
   }
 
+
+/** [CHAP-3][EXERCISE-14] impl append in terms of foldRight or foldLeft */
+  def append2[A](a1: List[A], a2: List[A]): List[A] =
+    foldRight2(a1, a2)((e, acc) ⇒ Cons(e, acc))
+
+
   /** [CHAP-3][EXERCISE-06] impl init on List.
    * NOTE: non tail-recursive
    */
