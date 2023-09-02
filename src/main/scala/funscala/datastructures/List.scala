@@ -124,6 +124,12 @@ object List {
   def flatConcat[A](l: List[List[A]]): List[A] =
     foldRight2(l, Nil:List[A])((elem, acc) ⇒ append2(elem, acc))
 
+
+  /** [CHAP-3][EXERCISE-20] impl flatMap on List */
+  def flatMap[A, B](as: List[A])(f: A ⇒ List[B]): List[B] =
+    foldRight2(as, Nil:List[B])((elem, acc) ⇒ append2(f(elem), acc))
+
+
   /** [CHAP-3][EXERCISE-06] impl init on List.
    * NOTE: non tail-recursive
    */
