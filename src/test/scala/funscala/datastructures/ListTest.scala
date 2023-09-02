@@ -136,11 +136,12 @@ class ListTest extends AnyFlatSpec {
 
   // [CHAP-3][EXERCISE-20] impl flatMap on List
   "Flat mapping of List" should "return flat list of all Lists' elements" in {
-    val mapping: Int ⇒ List[String] = a ⇒ Cons(a.toString, Nil)
+    val mapping: Int ⇒ List[String] = a ⇒ List(a.toString, a.toString)
+    assert(mapping(1) == List("1","1"))
 
     assert(List.flatMap(List[Int]())(mapping) == List[String]())
-    assert(List.flatMap(List(1))(mapping) == List("1"))
-    assert(List.flatMap(List(1,2,3))(mapping) == List("1","2","3"))
+    assert(List.flatMap(List(1))(mapping) == List("1","1"))
+    assert(List.flatMap(List(1,2,3))(mapping) == List("1","1", "2","2", "3","3"))
   }
 
   "Init of List" should "return all except last element" in {
