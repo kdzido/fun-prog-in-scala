@@ -66,9 +66,11 @@ object List {
     reverse(foldLeft(as, Nil:List[B])((b,a) ⇒ Cons(f(a), b)))
 
 
-  // [CHAP-3][EXERCISE-19] implement filter function on List
+  /** [CHAP-3][EXERCISE-19] implement filter function on List
+   * [CHAP-3][EXERCISE-21] implement filter in terms of flatMap on List */
   def filter[A](as: List[A])(f: A ⇒ Boolean): List[A] =
-    reverse(foldLeft(as, Nil:List[A])((acc, a) ⇒ if (f(a)) Cons(a, acc) else acc))
+//    reverse(foldLeft(as, Nil:List[A])((acc, a) ⇒ if (f(a)) Cons(a, acc) else acc))
+    flatMap(as)(a => if (f(a)) Cons(a, Nil) else Nil)
 
   /** Book's example.*/
   def sum2(ints: List[Int]): Int = foldRight(ints, 0)(_ + _)
