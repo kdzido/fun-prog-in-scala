@@ -285,4 +285,11 @@ class ListTest extends AnyFlatSpec {
     assert(List.filter(List(0,1,2,3,4,5))(oddNumbers) == List[Int](1,3,5))
   }
 
+  /** [CHAP-3][EXERCISE-22] sum elements of two lists */
+  "Zipped lists" should "return list with summed elements" in {
+    assert(List.zipAndSumElems(Nil, Nil) == List())
+    assert(List.zipAndSumElems(List(1), List(4)) == List(5))
+    assert(List.zipAndSumElems(List(1,2,3), List(4,5,6)) == List(5,7,9))
+  }
+
 }

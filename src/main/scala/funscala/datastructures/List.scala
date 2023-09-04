@@ -131,6 +131,14 @@ object List {
   def flatMap[A, B](as: List[A])(f: A ⇒ List[B]): List[B] =
     foldRight2(as, Nil:List[B])((elem, acc) ⇒ append2(f(elem), acc))
 
+  /** [CHAP-3][EXERCISE-22] sum elements of two lists */
+  def zipAndSumElems(l1: List[Int], l2: List[Int]): List[Int] = {
+    def goSum(m1: List[Int], m2: List[Int], acc: List[Int]): List[Int] = (m1, m2) match {
+      case (Nil, Nil) ⇒ acc
+      case (Cons(h1,t1), Cons(h2,t2)) ⇒ goSum(t1, t2, Cons(h1+h2, acc))
+    }
+    reverse(goSum(l1, l2, Nil))
+  }
 
   /** [CHAP-3][EXERCISE-06] impl init on List.
    * NOTE: non tail-recursive
