@@ -306,4 +306,24 @@ class ListTest extends AnyFlatSpec {
     assert(List.zipCustom(List(1, 2, 3), List(4, 5, 6))(product) == List(4, 10, 18))
   }
 
+  /** [CHAP-3][EXERCISE-24] implement hasSubsequence on List (hard) */
+  "List" should "check if subsequence present" in {
+    val l1 = List(1, 2, 3, 4)
+
+    assert(List.hasSubsequence(l1, Nil) == true)
+    assert(List.hasSubsequence(l1, List(1)) == true)
+    assert(List.hasSubsequence(l1, List(1,2)) == true)
+    assert(List.hasSubsequence(l1, List(1,2,3)) == true)
+    assert(List.hasSubsequence(l1, List(1,2,3,4)) == true)
+    assert(List.hasSubsequence(l1, List(1,2,3,4,5)) == false)
+
+    assert(List.hasSubsequence(l1, List(2)) == true)
+    assert(List.hasSubsequence(l1, List(2, 3)) == true)
+    assert(List.hasSubsequence(l1, List(2, 3, 4)) == true)
+    assert(List.hasSubsequence(l1, List(2, 3, 4, 5)) == false)
+
+    assert(List.hasSubsequence(l1, List(4)) == true)
+    assert(List.hasSubsequence(l1, List(4, 5)) == false)
+  }
+
 }

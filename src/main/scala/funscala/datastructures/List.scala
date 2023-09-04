@@ -133,6 +133,7 @@ object List {
 
   /** [CHAP-3][EXERCISE-22] sum elements of two lists */
   def zipAndSumElems(l1: List[Int], l2: List[Int]): List[Int] = {
+    @tailrec
     def goSum(m1: List[Int], m2: List[Int], acc: List[Int]): List[Int] = (m1, m2) match {
       case (Nil, Nil) ⇒ acc
       case (Cons(h1,t1), Cons(h2,t2)) ⇒ goSum(t1, t2, Cons(h1+h2, acc))
@@ -142,12 +143,33 @@ object List {
 
   /** [CHAP-3][EXERCISE-23] zip lists */
   def zipCustom[A](l1: List[A], l2: List[A])(f: (A,A) ⇒ A): List[A] = {
+    @tailrec
     def go(m1: List[A], m2: List[A], acc: List[A]): List[A] = (m1, m2) match {
       case (Nil, Nil) ⇒ acc
       case (Cons(h1, t1), Cons(h2, t2)) ⇒ go(t1, t2, Cons(f(h1, h2), acc))
     }
     reverse(go(l1, l2, Nil))
   }
+
+  /** [CHAP-3][EXERCISE-24] implement hasSubsequence on List (hard) */
+  def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = {
+    @tailrec
+    def goMatchingAgainstBeginningOfList(xs: List[A], pat: List[A], matchingAcc: Boolean): Boolean = (xs, pat) match {
+      case (Nil, Nil) ⇒ matchingAcc
+      case (Cons(_,_), Nil) ⇒ matchingAcc
+      case (Nil, Cons(_,_)) ⇒ false
+      case (Cons(xsh, xst), Cons(ph, pt)) ⇒ goMatchingAgainstBeginningOfList(xst, pt, matchingAcc && (xsh == ph))
+    }
+
+    @tailrec
+    def loop(ls: List[A], foundAcc: Boolean): Boolean = ls match {
+      case Nil ⇒ foundAcc
+      case Cons(h, t) ⇒ loop(t, foundAcc || goMatchingAgainstBeginningOfList(ls, sub, true))
+    }
+
+    loop(l, false)
+  }
+
   /** [CHAP-3][EXERCISE-06] impl init on List.
    * NOTE: non tail-recursive
    */
