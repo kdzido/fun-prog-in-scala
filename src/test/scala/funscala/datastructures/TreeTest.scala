@@ -5,7 +5,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 class TreeTest extends AnyFlatSpec {
 
   /** [CHAP-3][EXERCISE-25] implement size on Tree */
-  "Non-empty Tree" should "have size" in {
+  "Non-empty Tree of Ints" should "have size" in {
     val t1 = Leaf(1)
     val t3 = Branch(Leaf(1), Leaf(2))
     val t5 = Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))
@@ -15,7 +15,7 @@ class TreeTest extends AnyFlatSpec {
   }
 
   /* [CHAP-3][EXERCISE-26] implement maximum on Tree. */
-  "Non-empty Tree of Ints" should "have maximum element" in {
+  it should "have maximum element" in {
     val t1 = Leaf(1)
     val t3a = Branch(Leaf(1), Leaf(2))
     val t3b = Branch(Leaf(1), Leaf(2))
@@ -35,7 +35,7 @@ class TreeTest extends AnyFlatSpec {
   }
 
   /* [CHAP-3][EXERCISE-27] implement depeth on Tree. */
-  "Non-empty Tree of Ints" should "find max depth" in {
+  it should "find max depth" in {
     val t1 = Leaf(1)
     val t2a = Branch(Leaf(1), Leaf(2))
     val t2b = Branch(Leaf(1), Leaf(2))
@@ -50,4 +50,20 @@ class TreeTest extends AnyFlatSpec {
     assert(Tree.depth(t3b) == 3)
     assert(Tree.depth(t4a) == 4)
   }
+
+  // [CHAP-3][EXERCISE-28] implement map on Tree
+  it should "be mapped by incrementing each leaf" in {
+    val t1 = Leaf(1)
+    val t2a = Branch(Leaf(1), Leaf(2))
+    val t2b = Branch(Leaf(1), Leaf(2))
+    val t3a = Branch(Leaf(1), Branch(Leaf(5), Leaf(3)))
+
+    val incrByOne: Int ⇒ Int = _ + 1
+
+    assert(Tree.map(t1)(incrByOne) == Leaf(2))
+    assert(Tree.map(t2a)(incrByOne) == Branch(Leaf(2), Leaf(3)))
+    assert(Tree.map(t2b)(incrByOne) == Branch(Leaf(2), Leaf(3)))
+    assert(Tree.map(t3a)(incrByOne) == Branch(Leaf(2), Branch(Leaf(6), Leaf(4))))
+  }
+
 }

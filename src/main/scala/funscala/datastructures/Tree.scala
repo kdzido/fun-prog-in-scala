@@ -26,4 +26,13 @@ object Tree {
     case Leaf(x) ⇒ 1
     case Branch(t1, t2) ⇒ 1 + (depth(t1) max depth(t2))
   }
+
+  /** [CHAP-3][EXERCISE-28] implement map on Tree.
+   * NOTE non-tail recursive, for balanced trees shall not be much of issue due to O(log n) */
+  def map[A](t: Tree[A])(f: A => A): Tree[A] = t match {
+    case Leaf(x) ⇒ Leaf(f(x))
+    case Branch(t1, t2) ⇒ Branch(map(t1)(f), map(t2)(f))
+  }
+
+
 }
