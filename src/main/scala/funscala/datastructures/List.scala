@@ -140,6 +140,14 @@ object List {
     reverse(goSum(l1, l2, Nil))
   }
 
+  /** [CHAP-3][EXERCISE-23] zip lists */
+  def zipCustom[A](l1: List[A], l2: List[A])(f: (A,A) ⇒ A): List[A] = {
+    def go(m1: List[A], m2: List[A], acc: List[A]): List[A] = (m1, m2) match {
+      case (Nil, Nil) ⇒ acc
+      case (Cons(h1, t1), Cons(h2, t2)) ⇒ go(t1, t2, Cons(f(h1, h2), acc))
+    }
+    reverse(go(l1, l2, Nil))
+  }
   /** [CHAP-3][EXERCISE-06] impl init on List.
    * NOTE: non tail-recursive
    */

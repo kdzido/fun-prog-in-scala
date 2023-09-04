@@ -292,4 +292,18 @@ class ListTest extends AnyFlatSpec {
     assert(List.zipAndSumElems(List(1,2,3), List(4,5,6)) == List(5,7,9))
   }
 
+  /** [CHAP-3][EXERCISE-23] zip lists */
+  "Zipped lists" should "return list with combined elements with given function" in {
+    val sum: (Int, Int) ⇒ Int = _ + _
+    val product: (Int, Int) ⇒ Int = _ * _
+    assert(List.zipCustom(Nil, Nil)(sum) == List())
+    assert(List.zipCustom(Nil, Nil)(product) == List())
+
+    assert(List.zipCustom(List(1), List(4))(sum) == List(5))
+    assert(List.zipCustom(List(1), List(4))(product) == List(4))
+
+    assert(List.zipCustom(List(1, 2, 3), List(4, 5, 6))(sum) == List(5, 7, 9))
+    assert(List.zipCustom(List(1, 2, 3), List(4, 5, 6))(product) == List(4, 10, 18))
+  }
+
 }
