@@ -34,4 +34,20 @@ class TreeTest extends AnyFlatSpec {
     assert(Tree.maximum(t5c) == 5)
   }
 
+  /* [CHAP-3][EXERCISE-27] implement depeth on Tree. */
+  "Non-empty Tree of Ints" should "find max depth" in {
+    val t1 = Leaf(1)
+    val t2a = Branch(Leaf(1), Leaf(2))
+    val t2b = Branch(Leaf(1), Leaf(2))
+    val t3a = Branch(Leaf(1), Branch(Leaf(5), Leaf(3)))
+    val t3b = Branch(Branch(Leaf(3), Leaf(5)), Leaf(1))
+    val t4a = Branch(Branch(Leaf(3), Branch(Leaf(4), Leaf(5))), Leaf(1))
+
+    assert(Tree.depth(t1) == 1)
+    assert(Tree.depth(t2a) == 2)
+    assert(Tree.depth(t2b) == 2)
+    assert(Tree.depth(t3a) == 3)
+    assert(Tree.depth(t3b) == 3)
+    assert(Tree.depth(t4a) == 4)
+  }
 }
