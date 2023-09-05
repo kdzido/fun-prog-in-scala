@@ -1,6 +1,6 @@
 package funscala.ch2
 
-import funscala.ch2.Chapter2.{abs, andThen, binarySearch, compose, curry, factorial, fib, formatAbs, formatResult, isSorted, lessThan, partial1, uncurry}
+import funscala.ch2.Chapter2.*
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 class Chapter2Test extends AnyFunSuiteLike {
