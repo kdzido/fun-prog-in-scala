@@ -27,4 +27,4 @@ lazy val root = (project in file("."))
     commonSettings,
     libraryDependencies += "org.openjdk.jol" % "jol-core" % "0.17",
   )
-  .aggregate(chapter01, chapter02, chapter03)
+  .aggregate(chapter01, chapter02, chapter03, chapter04)
