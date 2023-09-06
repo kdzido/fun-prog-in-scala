@@ -54,4 +54,17 @@ class OptionTest extends AnyFlatSpec {
     assert(Some(1).filter(_ % 2 == 1) == Some(1))
   }
 
+  "Function" should "be lifted" in {
+    val incrFn: Int ⇒ Int = _ + 1
+    val liftedIncrFn = Option.lift(incrFn)
+    assert(liftedIncrFn(None) == None)
+    assert(liftedIncrFn(Some(1)) == Some(2))
+  }
+
+  "Lifted pattern matching function" should "match strings" in {
+    assert(Option.doesMatch("(1,2,3", "") == None)  // invalid pattern
+    assert(Option.doesMatch("[1,2,3]{1,3}", "") == Some(false))
+    assert(Option.doesMatch("[1,2,3]{1,3}", "123") == Some(true))
+    assert(Option.doesMatch("[1,2,3]{1,3}", "1234") == Some(false))
+  }
 }

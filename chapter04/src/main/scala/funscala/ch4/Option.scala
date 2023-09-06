@@ -36,5 +36,32 @@ case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
 object Option {
+  import java.util.regex._
 
+  /** Book's example */
+  def lift[A,B](f: A ⇒ B): Option[A] ⇒ Option[B] = _ map f
+
+  /** Book's example */
+  def pattern(s: String): Option[Pattern] =
+    try {
+      Some(Pattern.compile(s))
+    } catch {
+      case e: PatternSyntaxException ⇒ None
+    }
+
+  /** Book's example */
+  def mkMatcher(pat: String): Option[String ⇒ Boolean] =
+    pattern(pat) map(p ⇒ (s: String) ⇒ p.matcher(s).matches())
+
+  /** Book's example */
+  def mkMatcher_1(pat: String): Option[String ⇒ Boolean] =
+    for {
+      p <- pattern(pat)
+    } yield ((s: String) ⇒ p.matcher(s).matches())
+
+  /** Book's example */
+  def doesMatch(pat: String, s: String): Option[Boolean] =
+    for {
+      p <- mkMatcher_1(pat)
+    } yield p(s)
 }
