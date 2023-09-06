@@ -67,4 +67,14 @@ class OptionTest extends AnyFlatSpec {
     assert(Option.doesMatch("[1,2,3]{1,3}", "123") == Some(true))
     assert(Option.doesMatch("[1,2,3]{1,3}", "1234") == Some(false))
   }
+
+  // [CHAP-4][EXERCISE-03] implement map2 on Option
+  "Two Options" should "be mapped to 3rd Option" in {
+    val f: (Int, Int) ⇒ String = (a,b) ⇒ (a + b).toString
+
+    assert(Option.map2(None, None)(f) == None)
+    assert(Option.map2(Some(1), None)(f) == None)
+    assert(Option.map2(None, Some(2))(f) == None)
+    assert(Option.map2(Some(1), Some(2))(f) == Some("3"))
+  }
 }

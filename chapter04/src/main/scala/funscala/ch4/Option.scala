@@ -31,6 +31,7 @@ sealed trait Option[+A] {
     case None ⇒ None
     case Some(a) ⇒ if (f(a)) Some(a) else None
   }
+
 }
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
@@ -40,6 +41,13 @@ object Option {
 
   /** Book's example */
   def lift[A,B](f: A ⇒ B): Option[A] ⇒ Option[B] = _ map f
+
+  /** [CHAP-4][EXERCISE-03] implement map2 on Option */
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A,B) ⇒ C): Option[C] =
+    for {
+      av <- a
+      bv <- b
+    } yield f(av,bv)
 
   /** Book's example */
   def pattern(s: String): Option[Pattern] =
