@@ -25,11 +25,20 @@ object Chapter4 {
     else xs.sum / xs.length
 
   /** Book's example */
-  def mean_2(xs: IndexedSeq[Double]): Option[Double] =
+  def mean_2(xs: Seq[Double]): Option[Double] =
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
 
+
+  /** [CHAP-4][EXERCISE-02] implement variance in terms of mean and flatMap */
+  def variance(xs: Seq[Double]): Option[Double] = {
+    mean_2(xs).flatMap(m ⇒ {
+      val squaredDistances: Seq[Double] = xs.map(x ⇒ math.pow(x - m, 2))
+      mean_2(squaredDistances)
+    })
+  }
+
   def main(args: Array[String]): Unit = {
-    println("Chapter 4")
+    println("Chapter 4 - Error handling without exceptions")
   }
 }

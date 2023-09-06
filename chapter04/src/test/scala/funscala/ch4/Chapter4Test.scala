@@ -40,4 +40,13 @@ class Chapter4Test extends AnyFlatSpec with Matchers {
     assert(Chapter4.mean_2(IndexedSeq(1.0, 2.0)) == Some(1.5))
   }
 
+  // [CHAP-4][EXERCISE-02] implement variance in terms of mean and flatMap
+  "Variance of List" should "return calculated value" in {
+    assert(Chapter4.variance(Seq()) == None)
+    assert(Chapter4.variance(Seq(1.0)) == Some(0.0))
+    assert(Chapter4.variance(Seq(1.0, 1.0)) == Some(0.0))
+    assert(Chapter4.variance(Seq(1.0, 3.0)) == Some(1.0))
+  }
+
+
 }
