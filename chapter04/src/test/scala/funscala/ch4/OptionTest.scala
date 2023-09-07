@@ -78,15 +78,31 @@ class OptionTest extends AnyFlatSpec {
     assert(Option.map2(Some(1), Some(2))(f) == Some("3"))
   }
 
-  // [CHAP-4][EXERCISE-04] re-implement bothMatch in terms of map2
   "String" should "be matched against both patterns simultaneously" in {
     assert(Option.bothMatch("[1", "[2,3,4]+", "1") == None) // invalid pattern
     assert(Option.bothMatch("[1,2,3]+", "[2", "1") == None) // invalid pattern
-    assert(Option.bothMatch("[1", "[2", "1") == None)       // invalid both patterns
-
+    assert(Option.bothMatch("[1", "[2", "1") == None) // invalid both patterns
     assert(Option.bothMatch("[1,2,3]+", "[2,3,4]+", "1") == Some(false))
     assert(Option.bothMatch("[1,2,3]+", "[2,3,4]+", "2") == Some(true))
     assert(Option.bothMatch("[1,2,3]+", "[2,3,4]+", "3") == Some(true))
     assert(Option.bothMatch("[1,2,3]+", "[2,3,4]+", "4") == Some(false))
+
+    assert(Option.bothMatch_1("[1", "[2,3,4]+", "1") == None) // invalid pattern
+    assert(Option.bothMatch_1("[1,2,3]+", "[2", "1") == None) // invalid pattern
+    assert(Option.bothMatch_1("[1", "[2", "1") == None) // invalid both patterns
+    assert(Option.bothMatch_1("[1,2,3]+", "[2,3,4]+", "1") == Some(false))
+    assert(Option.bothMatch_1("[1,2,3]+", "[2,3,4]+", "2") == Some(true))
+    assert(Option.bothMatch_1("[1,2,3]+", "[2,3,4]+", "3") == Some(true))
+    assert(Option.bothMatch_1("[1,2,3]+", "[2,3,4]+", "4") == Some(false))
+
+    // [CHAP-4][EXERCISE-04] re-implement bothMatch in terms of map2
+    assert(Option.bothMatch_2("[1", "[2,3,4]+", "1") == None) // invalid pattern
+    assert(Option.bothMatch_2("[1,2,3]+", "[2", "1") == None) // invalid pattern
+    assert(Option.bothMatch_2("[1", "[2", "1") == None) // invalid both patterns
+    assert(Option.bothMatch_2("[1,2,3]+", "[2,3,4]+", "1") == Some(false))
+    assert(Option.bothMatch_2("[1,2,3]+", "[2,3,4]+", "2") == Some(true))
+    assert(Option.bothMatch_2("[1,2,3]+", "[2,3,4]+", "3") == Some(true))
+    assert(Option.bothMatch_2("[1,2,3]+", "[2,3,4]+", "4") == Some(false))
   }
+
 }

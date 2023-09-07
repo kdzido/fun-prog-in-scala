@@ -73,13 +73,21 @@ object Option {
       p <- mkMatcher_1(pat)
     } yield p(s)
 
-  /** [CHAP-4][EXERCISE-04] re-implement bothMatch in terms of map2  */
+  /** Book's example */
   def bothMatch(pat: String, pat2: String, s: String): Option[Boolean] =
-    Option.map2(mkMatcher(pat), mkMatcher(pat2))((a,b) ⇒ a(s) && b(s))
+    for {
+      f <- mkMatcher(pat)
+      g <- mkMatcher(pat2)
+    } yield f(s) && g(s)
 
   /** Book's example */
   def bothMatch_1(pat: String, pat2: String, s: String): Option[Boolean] =
     mkMatcher(pat).flatMap(f ⇒
     mkMatcher(pat2).map(g ⇒
       f(s) && g(s)))
+
+  /** [CHAP-4][EXERCISE-04] re-implement bothMatch in terms of map2 */
+  def bothMatch_2(pat: String, pat2: String, s: String): Option[Boolean] = Option.map2(mkMatcher(pat), mkMatcher(pat2))(
+    (a, b) ⇒ a(s) && b(s))
+
 }
