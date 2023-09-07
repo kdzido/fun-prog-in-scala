@@ -116,6 +116,31 @@ class OptionTest extends AnyFlatSpec {
     assert(Option.sequence(List(None, Some(2), Some(3))) == None)
     assert(Option.sequence(List(Some(1), None, Some(3))) == None)
     assert(Option.sequence(List(Some(1), Some(2), None)) == None)
+
+    // reimplement sequence_1 in terms of travers
+    assert(Option.sequence_1(List[Option[Int]]()) == Some(List()))
+
+    assert(Option.sequence_1(List(Some(1))) == Some(List(1)))
+    assert(Option.sequence_1(List(Some(1), Some(2), Some(3))) == Some(List(1, 2, 3)))
+
+    assert(Option.sequence_1(List(None)) == None)
+    assert(Option.sequence_1(List(None, Some(2), Some(3))) == None)
+    assert(Option.sequence_1(List(Some(1), None, Some(3))) == None)
+    assert(Option.sequence_1(List(Some(1), Some(2), None)) == None)
+  }
+
+  // [CHAP-4][EXERCISE-06] implement traverse
+  "List" should "be traversed and mapped into Optional List" in {
+    val f: Int ⇒ Option[String] = (i) ⇒  Some(i.toString)
+    val evenNumbers: Int ⇒ Option[String] = (i) ⇒  if (i % 2 == 0) Some(i.toString) else None
+    val oddNumbers: Int ⇒ Option[String] = (i) ⇒  if (i % 2 == 1) Some(i.toString) else None
+
+    assert(Option.traverse(List[Int]())(f) == Some(List()))
+    assert(Option.traverse(List[Int](1))(f) == Some(List("1")))
+    assert(Option.traverse(List[Int](1,2,3))(f) == Some(List("1","2","3")))
+
+    assert(Option.traverse(List[Int](2,4))(evenNumbers) == Some(List("2","4")))
+    assert(Option.traverse(List[Int](1,2))(evenNumbers) == None)
   }
 
 }

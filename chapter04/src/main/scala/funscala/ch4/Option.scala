@@ -102,4 +102,17 @@ object Option {
     }
     go(as, Some(List())).flatMap(al ⇒ Some(al.reverse))
   }
+
+  def sequence_1[A](as: List[Option[A]]): Option[List[A]] = traverse(as)(ao ⇒  ao)
+
+  /** [CHAP-4][EXERCISE-06] implement traverse */
+  def traverse[A,B](as: List[A])(f: A ⇒ Option[B]): Option[List[B]] = {
+    @tailrec
+    def go(l: List[A], acc: Option[List[B]]): Option[List[B]] = l match {
+      case Nil ⇒ acc
+      case h :: t ⇒ go(t, for {al <- acc; fl <- f(h)} yield fl :: al)
+    }
+    go(as, Some(List())).flatMap(al ⇒ Some(al.reverse))
+  }
+
 }
