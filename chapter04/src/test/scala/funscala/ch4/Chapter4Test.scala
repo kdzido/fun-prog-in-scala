@@ -40,6 +40,20 @@ class Chapter4Test extends AnyFlatSpec with Matchers {
     assert(Chapter4.mean_2(IndexedSeq(1.0, 2.0)) == Some(1.5))
   }
 
+  "Total mean_3 fn of empty List" should "return bogus value" in {
+    assert(Chapter4.mean_3(IndexedSeq()) == Left(""))
+  }
+
+  "Total mean_3 fn of List" should "return mean of all elements" in {
+    assert(Chapter4.mean_3(IndexedSeq(1.0)) == Right(1.0))
+    assert(Chapter4.mean_3(IndexedSeq(1.0, 2.0)) == Right(1.5))
+  }
+
+  "Two doubles" should "be safely divided" in {
+    assert(Chapter4.safeDiv(3.0, 2.0) == Right(1.5))
+    assert(Chapter4.safeDiv(3.0, 0.0) == Right(Double.PositiveInfinity))  // not throwing
+  }
+
   // [CHAP-4][EXERCISE-02] implement variance in terms of mean and flatMap
   "Variance of List" should "return calculated value" in {
     assert(Chapter4.variance(Seq()) == None)

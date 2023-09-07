@@ -29,6 +29,19 @@ object Chapter4 {
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
 
+  /** Book's example */
+  def mean_3(xs: IndexedSeq[Double]): Either[String, Double] =
+    if (xs.isEmpty) Left("mean of empty list!")
+    else Right(xs.sum / xs.length)
+
+  /** Book's example */
+  def safeDiv(x: Double, y: Double): Either[Exception, Double] =
+    try {
+      Right(x / y)
+    } catch {
+      case e: Exception ⇒ Left(e)
+    }
+
 
   /** [CHAP-4][EXERCISE-02] implement variance in terms of mean and flatMap */
   def variance(xs: Seq[Double]): Option[Double] = {
@@ -42,3 +55,5 @@ object Chapter4 {
     println("Chapter 4 - Error handling without exceptions")
   }
 }
+
+
