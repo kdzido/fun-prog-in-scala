@@ -1,5 +1,7 @@
 package funscala.ch4
 
+import scala.annotation.tailrec
+
 /** Book's example */
 sealed trait Option[+A] {
   /** [CHAP-4][EXERCISE-01] implement Option trait */
@@ -90,4 +92,14 @@ object Option {
   def bothMatch_2(pat: String, pat2: String, s: String): Option[Boolean] = Option.map2(mkMatcher(pat), mkMatcher(pat2))(
     (a, b) ⇒ a(s) && b(s))
 
+  /** [CHAP-4][EXERCISE-05] implement sequence */
+  def sequence[A](as: List[Option[A]]): Option[List[A]] = {
+    @tailrec
+    def go(l: List[Option[A]], acc: Option[List[A]]): Option[List[A]] = l match {
+      case Nil ⇒ acc
+      case None :: _ ⇒ None
+      case Some(h) :: t ⇒ go(t, acc.flatMap(al ⇒ Some(h :: al)))
+    }
+    go(as, Some(List())).flatMap(al ⇒ Some(al.reverse))
+  }
 }

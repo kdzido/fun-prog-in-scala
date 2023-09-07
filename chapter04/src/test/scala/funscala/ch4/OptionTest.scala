@@ -105,4 +105,17 @@ class OptionTest extends AnyFlatSpec {
     assert(Option.bothMatch_2("[1,2,3]+", "[2,3,4]+", "4") == Some(false))
   }
 
+  // [CHAP-4][EXERCISE-05] implement sequence
+  "List of Options" should "sequence into Optional List" in {
+    assert(Option.sequence(List[Option[Int]]()) == Some(List()))
+
+    assert(Option.sequence(List(Some(1))) == Some(List(1)))
+    assert(Option.sequence(List(Some(1), Some(2), Some(3))) == Some(List(1,2,3)))
+
+    assert(Option.sequence(List(None)) == None)
+    assert(Option.sequence(List(None, Some(2), Some(3))) == None)
+    assert(Option.sequence(List(Some(1), None, Some(3))) == None)
+    assert(Option.sequence(List(Some(1), Some(2), None)) == None)
+  }
+
 }
