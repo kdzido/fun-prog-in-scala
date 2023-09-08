@@ -1,5 +1,7 @@
 package funscala.ch4
 
+import scala.annotation.tailrec
+
 /** Book's example */
 sealed trait Either[+E, +A] {
   /** [CHAP-4][EXERCISE-07] implement Either trait methods */
@@ -32,4 +34,40 @@ case class Right[+A](value: A) extends Either[Nothing, A] {
 
 object Either {
 
+  /** [CHAP-4][EXERCISE-08] implement sequence and traverse for Either */
+  def sequence[E,A](es: List[Either[E, A]]): Either[E,List[A]] = {
+    @tailrec def go(es: List[Either[E,A]], acc: Either[E, List[A]]): Either[E, List[A]] = es match {
+      case Nil ⇒ acc
+      case Left(ee) :: ot ⇒ Left(ee)
+      case Right(h) :: ot ⇒ go(ot, acc.map(l ⇒ h :: l))
+    }
+
+    @tailrec def reverseLoop(as: List[A], acc: List[A]): List[A] = as match {
+      case Nil ⇒ acc
+      case h :: t ⇒ reverseLoop(t, h :: acc)
+    }
+
+    val transformed = go(es, Right(List()))
+    transformed.map(l ⇒ reverseLoop(l, Nil))
+  }
+
+  /** [CHAP-4][EXERCISE-08] implement sequence and traverse for Either */
+  def traverse[E,A,B](as: List[A])(f: A => Either[E,B]): Either[E, List[B]] = {
+    val listOfEithers = as.map(f)
+
+    @tailrec def go(es: List[Either[E, B]], acc: Either[E, List[B]]): Either[E, List[B]] = es match {
+      case Nil ⇒ acc
+      case Left(ee) :: ot ⇒ Left(ee)
+      case Right(h) :: ot ⇒ go(ot, acc.map(l ⇒ h :: l))
+    }
+
+    @tailrec def reverseLoop(as: List[B], acc: List[B]): List[B] = as match {
+      case Nil ⇒ acc
+      case h :: t ⇒ reverseLoop(t, h :: acc)
+    }
+
+    val transformed = go(listOfEithers, Right(List()))
+    transformed.map(l ⇒ reverseLoop(l, Nil))
+  }
+  
 }

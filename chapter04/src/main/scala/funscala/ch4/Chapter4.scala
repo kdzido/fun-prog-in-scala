@@ -53,6 +53,14 @@ object Chapter4 {
 
   def main(args: Array[String]): Unit = {
     println("Chapter 4 - Error handling without exceptions")
+
+    case class Employee(age: Int, name: String, salary: Double)
+    val emp: Either[String, Employee] = for {
+      age <- Right(42)
+      name <- Left("invalid name")
+      salary <- Right(100000.0)
+    } yield Employee(age, name, salary)
+    println("Employee: " + emp)
   }
 }
 

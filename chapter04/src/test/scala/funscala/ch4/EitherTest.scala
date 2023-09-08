@@ -92,5 +92,34 @@ class EitherTest extends AnyFlatSpec {
     }
   }
 
+  // [CHAP-4][EXERCISE-08] implement sequence and traverse for Either
+  "List of Eithers" should "sequence to Either of List" in {
+    val inputEmpty = List()
+    val input1Absent = List(Left("error"))
+    val input1 = List(Right(1))
+    val inputAll = List(Right(1), Right(2), Right(3))
+    val inputNone = List(Right(1), Left("error"), Right(3))
+
+    assert(Either.sequence(inputEmpty) == Right(List()))
+    assert(Either.sequence(input1Absent) == Left("error"))
+    assert(Either.sequence(input1) == Right(List(1)))
+    assert(Either.sequence(inputAll) == Right(List(1, 2, 3)))
+    assert(Either.sequence(inputNone) == Left("error"))
+  }
+
+  // [CHAP-4][EXERCISE-08] implement sequence and traverse for Either
+  "List" should "traverse to Either of List" in {
+    val inputEmpty = List()
+    val input1 = List(1)
+    val inputAll = List(1,2,3)
+
+    assert(Either.traverse(inputEmpty)(a ⇒ Right(a)) == Right(List()))
+    assert(Either.traverse(input1)(a ⇒ Right(a)) == Right(List(1)))
+    assert(Either.traverse(inputAll)(a ⇒ Right(a)) == Right(List(1, 2, 3)))
+
+    assert(Either.traverse(inputEmpty)(a ⇒ Left("error")) == Right(List()))
+    assert(Either.traverse(input1)(a ⇒ Left("error")) == Left("error"))
+    assert(Either.traverse(inputAll)(a ⇒ Left("error")) == Left("error"))
+  }
 
 }
