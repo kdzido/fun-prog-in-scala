@@ -51,9 +51,28 @@ object Chapter4 {
     })
   }
 
+
+  // Book's example
+  sealed class Name(val value: String)
+  sealed class Age(val value: Int)
+  case class Person(name: Name, age: Age)
+
+  /** Book's example */
+  def mkName(name: String): Either[String, Name] =
+    if (name == null || name == "") Left("Name is empty.")
+    else Right(new Name(name))
+
+  def mkAge(age: Int): Either[String, Age] =
+    if (age < 0) Left("Age is out of range.")
+    else Right(new Age(age))
+
+  def mkPerson(name: String, age: Int): Either[String, Person] =
+    mkName(name).map2(mkAge(age))(Person(_,_))
+
   def main(args: Array[String]): Unit = {
     println("Chapter 4 - Error handling without exceptions")
 
+    // Book's example
     case class Employee(age: Int, name: String, salary: Double)
     val emp: Either[String, Employee] = for {
       age <- Right(42)
@@ -61,7 +80,16 @@ object Chapter4 {
       salary <- Right(100000.0)
     } yield Employee(age, name, salary)
     println("Employee: " + emp)
+
+    println("mkName: " + mkName("John"))
+    println("mkName: " + mkName(""))
+    println("mkAge: " + mkAge(12))
+    println("mkAge: " + mkAge(-1))
+    println("mkPerson: " + mkPerson("John", 12))
+    println("mkPerson: " + mkPerson("", 12))
+    println("mkPerson: " + mkPerson("John", -1))
   }
+
 }
 
 
