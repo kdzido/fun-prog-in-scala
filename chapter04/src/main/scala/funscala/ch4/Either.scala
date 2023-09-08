@@ -9,6 +9,8 @@ sealed trait Either[+E, +A] {
   def flatMap[EE >: E, B](f: A ⇒ Either[EE, B]): Either[EE, B]
   def orElse[EE >: E, B >: A](b: ⇒ Either[EE,B]): Either[EE,B]
   def map2[EE >: E, B, C](b: Either[EE,B])(f: (A,B) ⇒ C): Either[EE, C]
+  /** [CHAP-4][EXERCISE-09] implement Either map2 so that returns both errors */
+  def map2_1[EE >: E, B, C](b: Either[EE,B])(f: (A,B) ⇒ C): Either[List[EE], C]
 }
 
 /** [CHAP-4][EXERCISE-07] implement Either trait methods */
@@ -18,6 +20,12 @@ case class Left[+E](value: E) extends Either[E, Nothing] {
   override def orElse[EE >: E, B >: Nothing](b: ⇒ Either[EE, B]): Either[EE, B] = b
 
   override def map2[EE >: E, B, C](b: Either[EE, B])(f: (Nothing, B) ⇒ C): Either[EE, C] = this
+
+  /** [CHAP-4][EXERCISE-09] implement Either map2 so that returns both errors */
+  override def map2_1[EE >: E, B, C](b: Either[EE, B])(f: (Nothing, B) ⇒ C): Either[List[EE], C] = b match {
+    case Left(bb) ⇒ Left(List(value, bb)).asInstanceOf[Either[List[EE], C]]
+    case Right(bb) ⇒ Left(List(value)).asInstanceOf[Either[List[EE], C]]
+  }
 }
 
 /** [CHAP-4][EXERCISE-07] implement Either trait methods */
@@ -29,6 +37,12 @@ case class Right[+A](value: A) extends Either[Nothing, A] {
   override def map2[EE >: Nothing, B, C](b: Either[EE, B])(f: (A, B) ⇒ C): Either[EE, C] = (this, b) match {
     case (_, Left(lb)) ⇒ Left(lb)
     case (Right(ra), Right(rb)) ⇒ Right(f(ra, rb))
+  }
+
+  /** [CHAP-4][EXERCISE-09] implement Either map2 so that returns both errors */
+  override def map2_1[EE >: Nothing, B, C](b: Either[EE, B])(f: (A, B) ⇒ C): Either[List[EE], C] = b match {
+    case Left(bb) ⇒ Left(List(bb)).asInstanceOf[Either[List[EE], C]]
+    case Right(bb) => Right(f(value, bb))
   }
 }
 
@@ -69,5 +83,5 @@ object Either {
     val transformed = go(listOfEithers, Right(List()))
     transformed.map(l ⇒ reverseLoop(l, Nil))
   }
-  
+
 }

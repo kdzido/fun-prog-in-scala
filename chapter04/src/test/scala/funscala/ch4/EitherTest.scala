@@ -92,6 +92,35 @@ class EitherTest extends AnyFlatSpec {
     }
   }
 
+  /** [CHAP-4][EXERCISE-09] implement Either map2 so that returns both errors */
+  it should "map2_1 to return both errors in Left" in {
+    val left1 = Left(new IllegalArgumentException("fail1"))
+    val left2 = Left(new IllegalArgumentException("fail2"))
+    val right1 = Right(1)
+    val right2 = Right(2)
+
+    assertResult("3") {
+      right1.map2_1(right2)((a, b) ⇒ (a+b).toString) match {
+        case Right(a) ⇒ a
+      }
+    }
+    assertResult(List("fail2")) {
+      right1.map2_1(left2)((a, b) ⇒ b.toString) match {
+        case Left(e1 :: Nil) ⇒ List(e1.getMessage)
+      }
+    }
+    assertResult(List("fail1")) {
+      left1.map2_1(right1)((a, b) ⇒ b.toString) match {
+        case Left(e1 :: Nil) ⇒ List(e1.getMessage)
+      }
+    }
+    assertResult(List("fail1", "fail2")) {
+      left1.map2_1(left2)((a,b) ⇒ b.toString) match {
+        case Left(e1 :: e2 :: Nil) ⇒ List(e1.getMessage, e2.getMessage)
+      }
+    }
+  }
+
   // [CHAP-4][EXERCISE-08] implement sequence and traverse for Either
   "List of Eithers" should "sequence to Either of List" in {
     val inputEmpty = List()

@@ -62,10 +62,12 @@ object Chapter4 {
     if (name == null || name == "") Left("Name is empty.")
     else Right(new Name(name))
 
+  /** Book's example */
   def mkAge(age: Int): Either[String, Age] =
     if (age < 0) Left("Age is out of range.")
     else Right(new Age(age))
 
+  /** Book's example */
   def mkPerson(name: String, age: Int): Either[String, Person] =
     mkName(name).map2(mkAge(age))(Person(_,_))
 
