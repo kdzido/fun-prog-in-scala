@@ -23,7 +23,7 @@ object Stream {
     override def uncons = None
   }
   def cons[A](hd: ⇒ A, tl: ⇒ Stream[A]): Stream[A] = new Stream[A] {
-    def uncons = Some((hd, tl))
+    lazy val uncons = Some((hd, tl))
   }
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty[A]
