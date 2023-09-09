@@ -6,6 +6,16 @@ import scala.annotation.tailrec
 sealed trait Stream[+A] {
   def uncons: Option[(A, Stream[A])]
   def isEmpty: Boolean = uncons.isEmpty
+
+  /** [CHAP-5][EXERCISE-01] implement toList on Stream */
+  def toList: List[A] = {
+    @tailrec def go(s: Stream[A], acc: List[A]): List[A] = s.uncons match {
+      case None ⇒ acc
+      case Some((sh, st)) ⇒ go(st, sh :: acc)
+    }
+
+    go(this, List[A]()).reverse
+  }
 }
 /** Book's example */
 object Stream {

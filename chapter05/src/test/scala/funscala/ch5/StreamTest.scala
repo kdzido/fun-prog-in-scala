@@ -15,6 +15,7 @@ class StreamTest extends AnyFlatSpec {
     assert(stream.uncons.get._1 == 1)
     assert(stream.uncons.get._2.uncons.get._1 == 2)
     assert(stream.uncons.get._2.uncons.get._2.isEmpty == true)
+    assert(stream.toList == List(1,2))
   }
 
   "Stream created with apply" should "have elements" in {
@@ -22,6 +23,14 @@ class StreamTest extends AnyFlatSpec {
     assert(stream.uncons.get._1 == 1)
     assert(stream.uncons.get._2.uncons.get._1 == 2)
     assert(stream.uncons.get._2.uncons.get._2.isEmpty == true)
+    assert(stream.toList == List(1,2))
+  }
+
+  // [CHAP-5][EXERCISE-01] implement toList on Stream
+  "Stream" should "be converted into List" in {
+    assert(Stream.empty[Int].toList == List[Int]())
+    assert(Stream(1).toList == List(1))
+    assert(Stream(1, 2, 3).toList == List(1, 2, 3))
   }
 
 }
