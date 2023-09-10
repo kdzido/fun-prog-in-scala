@@ -155,8 +155,15 @@ class StreamTest extends AnyFlatSpec {
   // [CHAP-5][EXERCISE-07] implement infinite Stream generator of constant
   "Infinite Stream of constant" should "generate constant values" in {
     assert(Stream.constant(2).take(3).toList == List(2,2,2))
+    assert(Stream.constant(2).exists(_ == 2) == true)
     assert(Stream.constant(2).forAll(_ != 2) == false)
-    assert(Stream.constant(2).forAll(_ != 2) == false)
+  }
+
+  // [CHAP-5][EXERCISE-08] implement infinite incremental Stream generator starting from given n
+  "Infinite incremental Stream from Int" should "generate conseqequtive Ints" in {
+    assert(Stream.from(3).take(3).toList == List(3,4,5))
+    assert(Stream.from(3).exists(_ == 3) == true)
+    assert(Stream.from(3).forAll(_ < 3) == false)
   }
 
 

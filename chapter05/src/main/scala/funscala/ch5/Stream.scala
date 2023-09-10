@@ -98,8 +98,10 @@ object Stream {
   /** Book's example */
   val ones: Stream[Int] = Stream.cons(1,  ones)
 
-
   /** [CHAP-5][EXERCISE-07] implement infinite Stream generator of constant */
   def constant(n: Int): Stream[Int] = Stream.cons(n,  constant(n))
+  
+  /** [CHAP-5][EXERCISE-08] implement infinite incremental Stream generator starting from given n */
+  def from(n: Int): Stream[Int] = Stream.cons(n,  from(n+1))
 }
 
