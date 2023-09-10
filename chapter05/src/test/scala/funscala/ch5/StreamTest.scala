@@ -64,7 +64,7 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1, 2, 3).takeWhile(_ <= 3).toList == List(1, 2, 3))
     assert(Stream(1, 2, 3).takeWhile(_ <= 4).toList == List(1, 2, 3))
   }
-    
+
   // [CHAP-5][EXERCISE-05] implement takeWhile in terms of foldRight
   it should "allow to takeWhile_2 predicate holds" in {
     assert(Stream.empty[Int].takeWhile_2(_ <= 1).toList == List[Int]())
@@ -105,6 +105,39 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1, 2, 3).forAll(_ <= 2) == false)
     assert(Stream(1, 2, 3).forAll(_ <= 1) == false)
     assert(Stream(1, 2, 3).forAll(_ <= 0) == false)
+  }
+
+  // [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight
+  it should "map using given function" in {
+    assert(Stream[Int]().map(_.toString).toList == List[String]())
+    assert(Stream(1).map(_.toString).toList == List("1"))
+    assert(Stream(1,2,3).map(_.toString).toList == List("1","2","3"))
+  }
+
+  // [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight
+  it should "flatMap using given function" in {
+    assert(Stream[Int]().flatMap((a) ⇒ Stream(a, a.toString)).toList == List[String]())
+    assert(Stream(1).flatMap((a) ⇒ Stream(a.toString, a.toString)).toList == List("1","1"))
+    assert(Stream(1,2,3).flatMap((a) ⇒ Stream(a.toString, a.toString)).toList == List("1","1","2","2","3","3"))
+  }
+
+  it should "filter using given predicate" in {
+    assert(Stream[Int]().filter(_ == 0).toList == List[Int]())
+
+    assert(Stream(1).filter(_ == 0).toList == List[Int]())
+    assert(Stream(1).filter(_ == 1).toList == List[Int](1))
+
+    assert(Stream(1, 2, 3).filter(_ <= 3).toList == List(1,2,3))
+    assert(Stream(1, 2, 3).filter(_ <= 2).toList == List(1,2))
+    assert(Stream(1, 2, 3).filter(_ <= 1).toList == List(1))
+    assert(Stream(1, 2, 3).filter(_ <= 0).toList == List())
+  }
+
+  it should "append another stream" in {
+    assert(Stream.append(Stream.empty[Int], Stream.empty[Int]).toList == List[Int]())
+    assert(Stream.append(Stream(1,2,3), Stream.empty[Int]).toList == List(1,2,3))
+    assert(Stream.append(Stream.empty[Int], Stream(4,5,6)).toList == List(4,5,6))
+    assert(Stream.append(Stream(1,2,3), Stream(4,5,6)).toList == List(1,2,3,4,5,6))
   }
 
 }

@@ -60,6 +60,20 @@ sealed trait Stream[+A] {
 
   /** [CHAP-5][EXERCISE-04] implement forAll on Stream */
   def forAll(p: A ⇒ Boolean): Boolean = foldRight(true)((a,b) ⇒ b && p(a))
+
+  /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
+  def map[B](f: A ⇒ B): Stream[B] = foldRight(empty[B]) {
+    (a,b) ⇒ cons(f(a), b)
+  }
+
+  /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
+  def filter(f: A ⇒ Boolean): Stream[A] = foldRight(empty[A]) {
+      (a,b) ⇒ if (f(a)) cons(a, b) else b
+    }
+
+  /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
+  def flatMap[B](f: A ⇒ Stream[B]): Stream[B] = foldRight(empty[B])((a,b) ⇒ Stream.append(f(a), b))
+
 }
 
 /** Book's example */
@@ -73,5 +87,12 @@ object Stream {
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty[A]
     else cons(as.head, apply(as.tail: _*))
+
+  /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
+  def append[A](a1: Stream[A], a2: Stream[A]): Stream[A] = a2.uncons match {
+    case None ⇒ a1
+    case Some((h2, t2)) ⇒ a1.foldRight(a2)((a,b) ⇒ cons(a,b))
+  }
+
 }
 
