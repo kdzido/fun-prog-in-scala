@@ -1,6 +1,6 @@
 package funscala.ch5
 
-import funscala.ch5.Stream.empty
+import funscala.ch5.Stream.{cons, empty}
 
 import scala.annotation.tailrec
 
@@ -42,6 +42,12 @@ sealed trait Stream[+A] {
       }
     go(this)
   }
+
+  /** [CHAP-5][EXERCISE-05] implement takeWhile in terms of foldRight */
+  def takeWhile_2(p: A ⇒ Boolean): Stream[A] = foldRight(empty[A])((a,b) ⇒ {
+      if (p(a)) cons(a, b)
+      else empty[A]
+    })
 
   /** Book's example */
   def foldRight[B](z: ⇒ B)(f: (A, ⇒ B) ⇒ B): B = uncons match {

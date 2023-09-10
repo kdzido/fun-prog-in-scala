@@ -64,6 +64,22 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1, 2, 3).takeWhile(_ <= 3).toList == List(1, 2, 3))
     assert(Stream(1, 2, 3).takeWhile(_ <= 4).toList == List(1, 2, 3))
   }
+    
+  // [CHAP-5][EXERCISE-05] implement takeWhile in terms of foldRight
+  it should "allow to takeWhile_2 predicate holds" in {
+    assert(Stream.empty[Int].takeWhile_2(_ <= 1).toList == List[Int]())
+    assert(Stream.empty[Int].takeWhile_2(_ > 1).toList == List[Int]())
+
+    assert(Stream(1).takeWhile_2(_ <= 1).toList == List(1))
+    assert(Stream(1).takeWhile_2(_ > 1).toList == List())
+
+    assert(Stream(1, 2, 3).takeWhile_2(_ <= 0).toList == List())
+    assert(Stream(1, 2, 3).takeWhile_2(_ <= 1).toList == List(1))
+    assert(Stream(1, 2, 3).takeWhile_2(_ <= 2).toList == List(1, 2))
+    assert(Stream(1, 2, 3).takeWhile_2(_ <= 3).toList == List(1, 2, 3))
+    assert(Stream(1, 2, 3).takeWhile_2(_ <= 4).toList == List(1, 2, 3))
+  }
+
 
   it should "foldRight" in {
     assert(Stream[Int]().foldRight(0)(_ + _) == 0)
