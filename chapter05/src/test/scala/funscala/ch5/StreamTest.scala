@@ -140,4 +140,17 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream.append(Stream(1,2,3), Stream(4,5,6)).toList == List(1,2,3,4,5,6))
   }
 
+  "Infinite stream of ones" should "allow to take n elements" in {
+    assert(Stream.ones.take(3).toList == List(1,1,1))
+  }
+
+  it should "check existence lazily with short circuiting" in {
+    assert(Stream.ones.exists(_ % 2 != 0) == true)
+  }
+
+  it should "check forAll lazily with short circuiting" in {
+    assert(Stream.ones.forAll(_ != 1) == false)
+  }
+
+
 }

@@ -59,7 +59,7 @@ sealed trait Stream[+A] {
   def exists(p: A ⇒ Boolean): Boolean = foldRight(false)((a,b) ⇒ p(a) || b)
 
   /** [CHAP-5][EXERCISE-04] implement forAll on Stream */
-  def forAll(p: A ⇒ Boolean): Boolean = foldRight(true)((a,b) ⇒ b && p(a))
+  def forAll(p: A ⇒ Boolean): Boolean = foldRight(true)((a,b) ⇒ p(a) && b)
 
   /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
   def map[B](f: A ⇒ B): Stream[B] = foldRight(empty[B]) {
@@ -94,5 +94,8 @@ object Stream {
     case Some((h2, t2)) ⇒ a1.foldRight(a2)((a,b) ⇒ cons(a,b))
   }
 
+
+  /** Book's example */
+  val ones: Stream[Int] = Stream.cons(1,  ones)
 }
 
