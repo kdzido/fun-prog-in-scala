@@ -33,4 +33,21 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1, 2, 3).toList == List(1, 2, 3))
   }
 
+  // [CHAP-5][EXERCISE-02] implement take on Stream
+  "Stream" should "allow to take n elements" in {
+    assert(Stream.empty[Int].take(-1).toList == List[Int]())
+    assert(Stream.empty[Int].take(0).toList == List[Int]())
+    assert(Stream.empty[Int].take(1).toList == List[Int]())
+
+    assert(Stream(1).take(0).toList == List())
+    assert(Stream(1).take(1).toList == List(1))
+    assert(Stream(1).take(2).toList == List(1))
+
+    assert(Stream(1,2,3).take(0).toList == List())
+    assert(Stream(1,2,3).take(1).toList == List(1))
+    assert(Stream(1,2,3).take(2).toList == List(1,2))
+    assert(Stream(1,2,3).take(3).toList == List(1,2,3))
+    assert(Stream(1,2,3).take(4).toList == List(1,2,3))
+  }
+
 }

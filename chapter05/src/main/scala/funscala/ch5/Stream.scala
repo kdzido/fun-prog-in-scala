@@ -1,10 +1,13 @@
 package funscala.ch5
 
+import funscala.ch5.Stream.empty
+
 import scala.annotation.tailrec
 
 /** Book's example */
 sealed trait Stream[+A] {
   def uncons: Option[(A, Stream[A])]
+
   def isEmpty: Boolean = uncons.isEmpty
 
   /** [CHAP-5][EXERCISE-01] implement toList on Stream */
@@ -16,7 +19,21 @@ sealed trait Stream[+A] {
 
     go(this, List[A]()).reverse
   }
+
+  /** [CHAP-5][EXERCISE-02] implement take on Stream */
+  def take(n: Int): Stream[A] = {
+    def go(nn: Int, left: ⇒ Stream[A]): Stream[A] =
+      if (nn <= 0) empty[A]
+      else {
+        left.uncons match {
+          case None ⇒ empty[A]
+          case Some((h, ts)) ⇒ Stream.cons(h, go(nn-1, ts))
+        }
+    }
+    go(n, this)
+  }
 }
+
 /** Book's example */
 object Stream {
   def empty[A]: Stream[A] = new Stream[A] {
