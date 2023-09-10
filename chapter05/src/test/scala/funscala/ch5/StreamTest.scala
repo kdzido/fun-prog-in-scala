@@ -34,7 +34,7 @@ class StreamTest extends AnyFlatSpec {
   }
 
   // [CHAP-5][EXERCISE-02] implement take on Stream
-  "Stream" should "allow to take n elements" in {
+  it should "allow to take n elements" in {
     assert(Stream.empty[Int].take(-1).toList == List[Int]())
     assert(Stream.empty[Int].take(0).toList == List[Int]())
     assert(Stream.empty[Int].take(1).toList == List[Int]())
@@ -51,7 +51,7 @@ class StreamTest extends AnyFlatSpec {
   }
 
   // [CHAP-5][EXERCISE-03] implement takeWhile on Stream
-  "Stream" should "allow to takeWhile predicate holds" in {
+  it should "allow to takeWhile predicate holds" in {
     assert(Stream.empty[Int].takeWhile(_ <= 1).toList == List[Int]())
     assert(Stream.empty[Int].takeWhile(_ > 1).toList == List[Int]())
 
@@ -63,6 +63,21 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1, 2, 3).takeWhile(_ <= 2).toList == List(1, 2))
     assert(Stream(1, 2, 3).takeWhile(_ <= 3).toList == List(1, 2, 3))
     assert(Stream(1, 2, 3).takeWhile(_ <= 4).toList == List(1, 2, 3))
+  }
+
+  it should "foldRight" in {
+    assert(Stream[Int]().foldRight(0)(_ + _) == 0)
+    assert(Stream(1).foldRight(0)(_ + _) == 1)
+    assert(Stream(1,2,3).foldRight(0)(_ + _) == 6)
+  }
+
+  it should "check existence of element" in {
+    assert(Stream[Int]().exists(_ == 1) == false)
+    assert(Stream(1, 2, 3).exists(_ == 0) == false)
+    assert(Stream(1, 2, 3).exists(_ == 1) == true)
+    assert(Stream(1, 2, 3).exists(_ == 2) == true)
+    assert(Stream(1, 2, 3).exists(_ == 3) == true)
+    assert(Stream(1, 2, 3).exists(_ == 4) == false)
   }
 
 }

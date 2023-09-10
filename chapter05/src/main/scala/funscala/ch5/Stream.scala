@@ -42,6 +42,15 @@ sealed trait Stream[+A] {
       }
     go(this)
   }
+
+  /** Book's example */
+  def foldRight[B](z: ⇒ B)(f: (A, ⇒ B) ⇒ B): B = uncons match {
+    case Some((h, t)) ⇒ f(h, t.foldRight(z)(f))
+    case None ⇒ z
+  }
+
+  /** Book's example */
+  def exists(p: A ⇒ Boolean): Boolean = foldRight(false)((a,b) ⇒ p(a) || b)
 }
 
 /** Book's example */
