@@ -50,4 +50,19 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1,2,3).take(4).toList == List(1,2,3))
   }
 
+  // [CHAP-5][EXERCISE-03] implement takeWhile on Stream
+  "Stream" should "allow to takeWhile predicate holds" in {
+    assert(Stream.empty[Int].takeWhile(_ <= 1).toList == List[Int]())
+    assert(Stream.empty[Int].takeWhile(_ > 1).toList == List[Int]())
+
+    assert(Stream(1).takeWhile(_ <= 1).toList == List(1))
+    assert(Stream(1).takeWhile(_ > 1).toList == List())
+
+    assert(Stream(1, 2, 3).takeWhile(_ <= 0).toList == List())
+    assert(Stream(1, 2, 3).takeWhile(_ <= 1).toList == List(1))
+    assert(Stream(1, 2, 3).takeWhile(_ <= 2).toList == List(1, 2))
+    assert(Stream(1, 2, 3).takeWhile(_ <= 3).toList == List(1, 2, 3))
+    assert(Stream(1, 2, 3).takeWhile(_ <= 4).toList == List(1, 2, 3))
+  }
+
 }

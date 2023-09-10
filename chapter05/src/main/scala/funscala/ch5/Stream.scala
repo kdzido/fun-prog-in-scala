@@ -32,6 +32,16 @@ sealed trait Stream[+A] {
     }
     go(n, this)
   }
+
+  /** [CHAP-5][EXERCISE-03] implement takeWhile on Stream */
+  def takeWhile(p: A ⇒ Boolean): Stream[A] = {
+    def go(left: ⇒ Stream[A]): Stream[A] =
+      left.uncons match {
+        case None ⇒ empty[A]
+        case Some((h, ts)) ⇒ if (p(h) == false) empty[A] else Stream.cons(h, go(ts))
+      }
+    go(this)
+  }
 }
 
 /** Book's example */
