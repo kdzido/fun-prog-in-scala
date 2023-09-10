@@ -80,4 +80,15 @@ class StreamTest extends AnyFlatSpec {
     assert(Stream(1, 2, 3).exists(_ == 4) == false)
   }
 
+  // [CHAP-5][EXERCISE-04] implement forAll on Stream
+  it should "check predicate forAll" in {
+    assert(Stream[Int]().forAll(_ == 0) == true)
+    assert(Stream(1, 2, 3).forAll(_ >= 0) == true)
+    assert(Stream(1, 2, 3).forAll(_ <= 3) == true)
+
+    assert(Stream(1, 2, 3).forAll(_ <= 2) == false)
+    assert(Stream(1, 2, 3).forAll(_ <= 1) == false)
+    assert(Stream(1, 2, 3).forAll(_ <= 0) == false)
+  }
+
 }
