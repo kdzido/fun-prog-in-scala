@@ -102,6 +102,15 @@ sealed trait Stream[+A] {
   /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
   def flatMap[B](f: A ⇒ Stream[B]): Stream[B] = foldRight(empty[B])((a,b) ⇒ Stream.append(f(a), b))
 
+  /** [CHAP-5][EXERCISE-14] implement tails unsing unfold on Streams */
+  def tails: Stream[Stream[A]] = unfold((this, true))(state ⇒ {
+    val (ss, hasMore) = state
+    (ss.uncons, hasMore) match {
+      case (None, false) ⇒ None
+      case (None, true) ⇒ Some((empty, (empty, false)))
+      case (Some(a, t), true) ⇒ Some(cons(a, t), (t, true))
+    }
+  })
 }
 
 /** Book's example */
@@ -186,7 +195,6 @@ object Stream {
     case (Some(_, _), None) ⇒ true
     case (Some(sh, st), Some(sh2, st2)) ⇒ if (sh != sh2) false else startsWith(st, st2)
   }
-
 
 }
 

@@ -263,4 +263,15 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.startsWith(l1, Stream(4,5)) shouldBe false
   }
 
+  "Stream" should "return Stream of all tails" in {
+    val l1 = Stream(1, 2, 3, 4)
+
+    Stream.empty[Int].tails.uncons.isEmpty shouldBe false
+    Stream.empty[Int].tails.uncons.get._1.toList shouldBe List()
+
+    Stream.empty[Int].tails.map_2(_.toList).toList shouldBe List(List())
+    Stream(1).tails.map_2(_.toList).toList shouldBe List(List(1), List())
+    Stream(1,2,3).tails.map_2(_.toList).toList shouldBe List(List(1,2,3), List(2,3), List(3), List())
+  }
+
 }
