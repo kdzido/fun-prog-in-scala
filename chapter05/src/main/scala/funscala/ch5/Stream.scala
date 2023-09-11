@@ -1,6 +1,6 @@
 package funscala.ch5
 
-import funscala.ch5.Stream.{cons, empty}
+import funscala.ch5.Stream.{cons, empty, unfold}
 
 import scala.annotation.tailrec
 
@@ -33,7 +33,19 @@ sealed trait Stream[+A] {
     go(n, this)
   }
 
-  /** [CHAP-5][EXERCISE-03] implement takeWhile on Stream */
+  /** [CHAP-5][EXERCISE-12] implement map, take, takeWhile, zip, zipAll in terms of unfold */
+  def take_2(n: Int): Stream[A] = unfold((n, this))(s ⇒ {
+    val (leftN, stream) = s
+    if (leftN <= 0) None
+    else {
+      stream.uncons match {
+        case None ⇒ None
+        case Some(aa, ss) ⇒ Some((aa, (leftN-1, ss)))
+      }
+    }
+  })
+
+    /** [CHAP-5][EXERCISE-03] implement takeWhile on Stream */
   def takeWhile(p: A ⇒ Boolean): Stream[A] = {
     def go(left: ⇒ Stream[A]): Stream[A] =
       left.uncons match {
@@ -48,6 +60,14 @@ sealed trait Stream[+A] {
       if (p(a)) cons(a, b)
       else empty[A]
     })
+
+  /** [CHAP-5][EXERCISE-12] implement map, take, takeWhile, zip, zipAll in terms of unfold */
+  def takeWhile_3(p: A ⇒ Boolean): Stream[A] = unfold(this)(s ⇒ {
+    s.uncons match {
+      case None ⇒ None
+      case Some(aa, ss) ⇒ if (p(aa)) Some((aa, ss)) else None
+    }
+  })
 
   /** Book's example */
   def foldRight[B](z: ⇒ B)(f: (A, ⇒ B) ⇒ B): B = uncons match {
@@ -65,6 +85,14 @@ sealed trait Stream[+A] {
   def map[B](f: A ⇒ B): Stream[B] = foldRight(empty[B]) {
     (a,b) ⇒ cons(f(a), b)
   }
+
+  /** [CHAP-5][EXERCISE-12] implement map, take, takeWhile, zip, zipAll in terms of unfold */
+  def map_2[B](f: A ⇒ B): Stream[B] = unfold(this)(s ⇒ {
+    s.uncons match {
+      case None ⇒ None
+      case Some(aa,ss) ⇒ Some((f(aa), ss))
+    }
+  })
 
   /** [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight */
   def filter(f: A ⇒ Boolean): Stream[A] = foldRight(empty[A]) {
@@ -130,6 +158,27 @@ object Stream {
     case None ⇒ empty[A]
     case Some((a,s)) ⇒ cons(a, unfold(s)(f))
   }
+
+  /** [CHAP-5][EXERCISE-12] implement map, take, takeWhile, zip, zipAll in terms of unfold */
+  def zip[A](s1: Stream[A], s2: Stream[A]): Stream[(A, A)] = unfold((s1.uncons,s2.uncons))(state ⇒ {
+    state match {
+      case (None, None) ⇒ None
+      case (Some(_, _), None) ⇒ None
+      case (None, Some(_, _)) ⇒ None
+      case (Some(sa1, ss1), Some(sa2, ss2)) ⇒ Some((sa1, sa2), (ss1.uncons, ss2.uncons))
+    }
+  })
+  
+  /** [CHAP-5][EXERCISE-12] implement map, take, takeWhile, zip, zipAll in terms of unfold */
+  def zipAll[A](s1: Stream[A], s2: Stream[A]): Stream[(Option[A], Option[A])] = unfold((s1.uncons,s2.uncons))(state ⇒ {
+    state match {
+      case (None, None) ⇒ None
+      case (Some(sa1, ss1), None) ⇒ Some((Some(sa1), None), (ss1.uncons, None))
+      case (None, Some(sa2, ss2)) ⇒ Some((None, Some(sa2)), (None, ss2.uncons))
+      case (Some(sa1, ss1), Some(sa2, ss2)) ⇒ Some((Some(sa1), Some(sa2)), (ss1.uncons, ss2.uncons))
+    }
+  })
+
 
 }
 

@@ -36,49 +36,65 @@ class StreamTest extends AnyFlatSpec with Matchers {
 
   // [CHAP-5][EXERCISE-02] implement take on Stream
   it should "allow to take n elements" in {
-    assert(Stream.empty[Int].take(-1).toList == List[Int]())
-    assert(Stream.empty[Int].take(0).toList == List[Int]())
-    assert(Stream.empty[Int].take(1).toList == List[Int]())
+    Stream.empty[Int].take(-1).toList shouldBe List[Int]()
+    Stream.empty[Int].take(0).toList shouldBe List[Int]()
+    Stream.empty[Int].take(1).toList shouldBe List[Int]()
+    Stream(1).take(0).toList shouldBe List()
+    Stream(1).take(1).toList shouldBe List(1)
+    Stream(1).take(2).toList shouldBe List(1)
+    Stream(1, 2, 3).take(0).toList shouldBe List()
+    Stream(1, 2, 3).take(1).toList shouldBe List(1)
+    Stream(1, 2, 3).take(2).toList shouldBe List(1, 2)
+    Stream(1, 2, 3).take(3).toList shouldBe List(1, 2, 3)
+    Stream(1, 2, 3).take(4).toList shouldBe List(1, 2, 3)
 
-    assert(Stream(1).take(0).toList == List())
-    assert(Stream(1).take(1).toList == List(1))
-    assert(Stream(1).take(2).toList == List(1))
-
-    assert(Stream(1,2,3).take(0).toList == List())
-    assert(Stream(1,2,3).take(1).toList == List(1))
-    assert(Stream(1,2,3).take(2).toList == List(1,2))
-    assert(Stream(1,2,3).take(3).toList == List(1,2,3))
-    assert(Stream(1,2,3).take(4).toList == List(1,2,3))
+    Stream.empty[Int].take_2(-1).toList shouldBe List[Int]()
+    Stream.empty[Int].take_2(0).toList shouldBe List[Int]()
+    Stream.empty[Int].take_2(1).toList shouldBe List[Int]()
+    Stream(1).take_2(0).toList shouldBe List()
+    Stream(1).take_2(1).toList shouldBe List(1)
+    Stream(1).take_2(2).toList shouldBe List(1)
+    Stream(1,2,3).take_2(0).toList shouldBe List()
+    Stream(1,2,3).take_2(1).toList shouldBe List(1)
+    Stream(1,2,3).take_2(2).toList shouldBe List(1,2)
+    Stream(1,2,3).take_2(3).toList shouldBe List(1,2,3)
+    Stream(1,2,3).take_2(4).toList shouldBe List(1,2,3)
   }
 
   // [CHAP-5][EXERCISE-03] implement takeWhile on Stream
   it should "allow to takeWhile predicate holds" in {
-    assert(Stream.empty[Int].takeWhile(_ <= 1).toList == List[Int]())
-    assert(Stream.empty[Int].takeWhile(_ > 1).toList == List[Int]())
-
-    assert(Stream(1).takeWhile(_ <= 1).toList == List(1))
-    assert(Stream(1).takeWhile(_ > 1).toList == List())
-
-    assert(Stream(1, 2, 3).takeWhile(_ <= 0).toList == List())
-    assert(Stream(1, 2, 3).takeWhile(_ <= 1).toList == List(1))
-    assert(Stream(1, 2, 3).takeWhile(_ <= 2).toList == List(1, 2))
-    assert(Stream(1, 2, 3).takeWhile(_ <= 3).toList == List(1, 2, 3))
-    assert(Stream(1, 2, 3).takeWhile(_ <= 4).toList == List(1, 2, 3))
+    Stream.empty[Int].takeWhile(_ <= 1).toList shouldBe List[Int]()
+    Stream.empty[Int].takeWhile(_ > 1).toList shouldBe List[Int]()
+    Stream(1).takeWhile(_ <= 1).toList shouldBe List(1)
+    Stream(1).takeWhile(_ > 1).toList shouldBe List()
+    Stream(1, 2, 3).takeWhile(_ <= 0).toList shouldBe List()
+    Stream(1, 2, 3).takeWhile(_ <= 1).toList shouldBe List(1)
+    Stream(1, 2, 3).takeWhile(_ <= 2).toList shouldBe List(1, 2)
+    Stream(1, 2, 3).takeWhile(_ <= 3).toList shouldBe List(1, 2, 3)
+    Stream(1, 2, 3).takeWhile(_ <= 4).toList shouldBe List(1, 2, 3)
   }
 
   // [CHAP-5][EXERCISE-05] implement takeWhile in terms of foldRight
   it should "allow to takeWhile_2 predicate holds" in {
-    assert(Stream.empty[Int].takeWhile_2(_ <= 1).toList == List[Int]())
-    assert(Stream.empty[Int].takeWhile_2(_ > 1).toList == List[Int]())
+    Stream.empty[Int].takeWhile_2(_ <= 1).toList shouldBe List[Int]()
+    Stream.empty[Int].takeWhile_2(_ > 1).toList shouldBe List[Int]()
+    Stream(1).takeWhile_2(_ <= 1).toList shouldBe List(1)
+    Stream(1).takeWhile_2(_ > 1).toList shouldBe List()
+    Stream(1, 2, 3).takeWhile_2(_ <= 0).toList shouldBe List()
+    Stream(1, 2, 3).takeWhile_2(_ <= 1).toList shouldBe List(1)
+    Stream(1, 2, 3).takeWhile_2(_ <= 2).toList shouldBe List(1, 2)
+    Stream(1, 2, 3).takeWhile_2(_ <= 3).toList shouldBe List(1, 2, 3)
+    Stream(1, 2, 3).takeWhile_2(_ <= 4).toList shouldBe List(1, 2, 3)
 
-    assert(Stream(1).takeWhile_2(_ <= 1).toList == List(1))
-    assert(Stream(1).takeWhile_2(_ > 1).toList == List())
-
-    assert(Stream(1, 2, 3).takeWhile_2(_ <= 0).toList == List())
-    assert(Stream(1, 2, 3).takeWhile_2(_ <= 1).toList == List(1))
-    assert(Stream(1, 2, 3).takeWhile_2(_ <= 2).toList == List(1, 2))
-    assert(Stream(1, 2, 3).takeWhile_2(_ <= 3).toList == List(1, 2, 3))
-    assert(Stream(1, 2, 3).takeWhile_2(_ <= 4).toList == List(1, 2, 3))
+    Stream.empty[Int].takeWhile_3(_ <= 1).toList shouldBe List[Int]()
+    Stream.empty[Int].takeWhile_3(_ > 1).toList shouldBe List[Int]()
+    Stream(1).takeWhile_3(_ <= 1).toList shouldBe List(1)
+    Stream(1).takeWhile_3(_ > 1).toList shouldBe List()
+    Stream(1, 2, 3).takeWhile_3(_ <= 0).toList shouldBe List()
+    Stream(1, 2, 3).takeWhile_3(_ <= 1).toList shouldBe List(1)
+    Stream(1, 2, 3).takeWhile_3(_ <= 2).toList shouldBe List(1, 2)
+    Stream(1, 2, 3).takeWhile_3(_ <= 3).toList shouldBe List(1, 2, 3)
+    Stream(1, 2, 3).takeWhile_3(_ <= 4).toList shouldBe List(1, 2, 3)
   }
 
 
@@ -110,9 +126,13 @@ class StreamTest extends AnyFlatSpec with Matchers {
 
   // [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight
   it should "map using given function" in {
-    assert(Stream[Int]().map(_.toString).toList == List[String]())
-    assert(Stream(1).map(_.toString).toList == List("1"))
-    assert(Stream(1,2,3).map(_.toString).toList == List("1","2","3"))
+    Stream[Int]().map(_.toString).toList shouldBe List[String]()
+    Stream(1).map(_.toString).toList shouldBe List("1")
+    Stream(1,2,3).map(_.toString).toList shouldBe List("1","2","3")
+
+    Stream[Int]().map_2(_.toString).toList shouldBe List[String]()
+    Stream(1).map_2(_.toString).toList shouldBe List("1")
+    Stream(1,2,3).map_2(_.toString).toList shouldBe List("1","2","3")
   }
 
   // [CHAP-5][EXERCISE-06] implement map, filter, append and flatMap in terms of foldRight
@@ -194,6 +214,30 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.unfold(0)(s ⇒ Some((s+1, s+1))).take(0).toList shouldBe List()
     Stream.unfold(0)(s ⇒ Some((s+1, s+1))).take(1).toList shouldBe List(1)
     Stream.unfold(0)(s ⇒ Some((s+1, s+1))).take(3).toList shouldBe List(1,2,3)
+  }
+
+  "Two Streams" should "be zipped on paired elements" in {
+    Stream.zip(Stream.empty[Int], Stream.empty[Int]).toList shouldBe List()
+    Stream.zip(Stream(1), Stream.empty[Int]).toList shouldBe List()
+    Stream.zip(Stream.empty[Int], Stream(4)).toList shouldBe List()
+    Stream.zip(Stream(1), Stream(4)).toList shouldBe List((1,4))
+    Stream.zip(Stream(1,2), Stream(4)).toList shouldBe List((1,4))
+    Stream.zip(Stream(1), Stream(4,5)).toList shouldBe List((1,4))
+    Stream.zip(Stream(1,2), Stream(4,5)).toList shouldBe List((1,4),(2,5))
+    Stream.zip(Stream(1,2,3), Stream(4,5)).toList shouldBe List((1,4),(2,5))
+    Stream.zip(Stream(1,2), Stream(4,5,6)).toList shouldBe List((1,4),(2,5))
+  }
+
+  it should "be zipped on all elements" in {
+    Stream.zipAll(Stream.empty[Int], Stream.empty[Int]).toList shouldBe List()
+    Stream.zipAll(Stream(1), Stream.empty[Int]).toList shouldBe List((Some(1), None))
+    Stream.zipAll(Stream.empty[Int], Stream(4)).toList shouldBe List((None, Some(4)))
+    Stream.zipAll(Stream(1), Stream(4)).toList shouldBe List((Some(1), Some(4)))
+    Stream.zipAll(Stream(1, 2), Stream(4)).toList shouldBe List((Some(1), Some(4)), (Some(2), None))
+    Stream.zipAll(Stream(1), Stream(4, 5)).toList shouldBe List((Some(1), Some(4)), (None, Some(5)))
+    Stream.zipAll(Stream(1, 2), Stream(4, 5)).toList shouldBe List((Some(1), Some(4)), (Some(2), Some(5)))
+    Stream.zipAll(Stream(1, 2, 3), Stream(4, 5)).toList shouldBe List((Some(1), Some(4)), (Some(2), Some(5)), (Some(3), None))
+    Stream.zipAll(Stream(1, 2), Stream(4, 5, 6)).toList shouldBe List((Some(1), Some(4)), (Some(2), Some(5)), (None, Some(6)))
   }
 
 }
