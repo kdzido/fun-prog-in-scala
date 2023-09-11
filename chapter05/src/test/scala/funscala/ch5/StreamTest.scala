@@ -1,8 +1,9 @@
 package funscala.ch5
 
+import org.scalatest.matchers.should._
 import org.scalatest.flatspec.AnyFlatSpec
 
-class StreamTest extends AnyFlatSpec {
+class StreamTest extends AnyFlatSpec with Matchers {
 
   "Empty Stream" should "not have any elements" in {
     val emptyStream = Stream.empty[Int]
@@ -160,11 +161,17 @@ class StreamTest extends AnyFlatSpec {
   }
 
   // [CHAP-5][EXERCISE-08] implement infinite incremental Stream generator starting from given n
-  "Infinite incremental Stream from Int" should "generate conseqequtive Ints" in {
+  "Infinite incremental Stream from Int" should "generate consecutive Ints" in {
     assert(Stream.from(3).take(3).toList == List(3,4,5))
     assert(Stream.from(3).exists(_ == 3) == true)
     assert(Stream.from(3).forAll(_ < 3) == false)
   }
 
+  // [CHAP-5][EXERCISE-9] implement infinite Stream of Fibonacci numbers
+  "Infinite Stream of Fibonacci numbers" should "generate consecutive fibs" in {
+    Stream.fibs.take(0).toList shouldBe List()
+    Stream.fibs.take(1).toList shouldBe List(0)
+    Stream.fibs.take(8).toList shouldBe List(0,1,1,2,3,5,8,13)
+  }
 
 }
