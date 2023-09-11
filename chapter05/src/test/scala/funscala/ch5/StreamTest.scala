@@ -174,4 +174,11 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.fibs.take(8).toList shouldBe List(0,1,1,2,3,5,8,13)
   }
 
+  // [CHAP-5][EXERCISE-10] implement unfold on Stream
+  "unfold" should "generate Stream" in {
+    Stream.unfold(0)(s ⇒ Some((s+1, s+1))).take(0).toList shouldBe List()
+    Stream.unfold(0)(s ⇒ Some((s+1, s+1))).take(1).toList shouldBe List(1)
+    Stream.unfold(0)(s ⇒ Some((s+1, s+1))).take(3).toList shouldBe List(1,2,3)
+  }
+
 }
