@@ -274,4 +274,24 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream(1,2,3).tails.map_2(_.toList).toList shouldBe List(List(1,2,3), List(2,3), List(3), List())
   }
 
+  "Stream" should "check if has subsequent Stream" in {
+    val l1 = Stream(1, 2, 3, 4)
+
+    Stream.hasSubsequence(Stream.empty[Int], Stream.empty[Int]) shouldBe true
+    Stream.hasSubsequence(Stream(1), Stream.empty) shouldBe true
+    Stream.hasSubsequence(Stream(1,2,3), Stream.empty) shouldBe true
+
+    Stream.hasSubsequence(Stream(1,2,3), Stream(1)) shouldBe true
+    Stream.hasSubsequence(Stream(1,2,3), Stream(2)) shouldBe true
+    Stream.hasSubsequence(Stream(1,2,3), Stream(3)) shouldBe true
+    Stream.hasSubsequence(Stream(1,2,3), Stream(1,2)) shouldBe true
+    Stream.hasSubsequence(Stream(1,2,3), Stream(2,3)) shouldBe true
+    Stream.hasSubsequence(Stream(1,2,3), Stream(1,2,3)) shouldBe true
+
+    Stream.hasSubsequence(Stream(1, 2, 3), Stream(0)) shouldBe false
+    Stream.hasSubsequence(Stream(1, 2, 3), Stream(4)) shouldBe false
+    Stream.hasSubsequence(Stream(1, 2, 3), Stream(0,1)) shouldBe false
+    Stream.hasSubsequence(Stream(1, 2, 3), Stream(3,4)) shouldBe false
+  }
+
 }

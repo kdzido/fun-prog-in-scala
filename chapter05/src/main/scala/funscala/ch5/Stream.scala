@@ -196,5 +196,9 @@ object Stream {
     case (Some(sh, st), Some(sh2, st2)) ⇒ if (sh != sh2) false else startsWith(st, st2)
   }
 
+  /** Book's example */
+  def hasSubsequence[A](s: Stream[A], s2: Stream[A]): Boolean =
+    s.tails.exists(startsWith(_, s2))
+
 }
 
