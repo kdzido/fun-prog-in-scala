@@ -98,11 +98,20 @@ object Stream {
   /** Book's example */
   val ones: Stream[Int] = Stream.cons(1,  ones)
 
+  /** [CHAP-5][EXERCISE-11] implement fibs, from, constant, ones in terms of unfold */
+  val ones_2: Stream[Int] = unfold(1)(s ⇒ Some((s,s)))
+
   /** [CHAP-5][EXERCISE-07] implement infinite Stream generator of constant */
   def constant(n: Int): Stream[Int] = Stream.cons(n,  constant(n))
 
+  /** [CHAP-5][EXERCISE-11] implement fibs, from, constant, ones in terms of unfold */
+  def constant_2(n: Int): Stream[Int] = unfold(n)(s ⇒ Some((s,s)))
+
   /** [CHAP-5][EXERCISE-08] implement infinite incremental Stream generator starting from given n */
   def from(n: Int): Stream[Int] = Stream.cons(n,  from(n+1))
+
+  /** [CHAP-5][EXERCISE-11] implement fibs, from, constant, ones in terms of unfold */
+  def from_2(n: Int): Stream[Int] = unfold(n)(s ⇒ Some((s, s+1)))
 
 
   /** [CHAP-5][EXERCISE-9] implement infinite Stream of Fibonacci numbers */
@@ -112,6 +121,9 @@ object Stream {
     }
     go(0, 1)
   }
+
+  /** [CHAP-5][EXERCISE-11] implement fibs, from, constant, ones in terms of unfold */
+  def fibs_2: Stream[Int] = unfold((0, 1))(s ⇒ Some((s._1, (s._2, s._1 + s._2))))
 
   /** [CHAP-5][EXERCISE-10] implement unfold on Stream */
   def unfold[A,S](s: S)(f: S ⇒ Option[(A,S)]): Stream[A] = f(s) match {

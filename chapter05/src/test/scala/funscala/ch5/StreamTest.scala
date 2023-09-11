@@ -143,14 +143,17 @@ class StreamTest extends AnyFlatSpec with Matchers {
 
   "Infinite stream of ones" should "allow to take n elements" in {
     assert(Stream.ones.take(3).toList == List(1,1,1))
+    assert(Stream.ones_2.take(3).toList == List(1,1,1))
   }
 
   it should "check existence lazily with short circuiting" in {
     assert(Stream.ones.exists(_ % 2 != 0) == true)
+    assert(Stream.ones_2.exists(_ % 2 != 0) == true)
   }
 
   it should "check forAll lazily with short circuiting" in {
     assert(Stream.ones.forAll(_ != 1) == false)
+    assert(Stream.ones_2.forAll(_ != 1) == false)
   }
 
   // [CHAP-5][EXERCISE-07] implement infinite Stream generator of constant
@@ -158,6 +161,10 @@ class StreamTest extends AnyFlatSpec with Matchers {
     assert(Stream.constant(2).take(3).toList == List(2,2,2))
     assert(Stream.constant(2).exists(_ == 2) == true)
     assert(Stream.constant(2).forAll(_ != 2) == false)
+
+    assert(Stream.constant_2(2).take(3).toList == List(2,2,2))
+    assert(Stream.constant_2(2).exists(_ == 2) == true)
+    assert(Stream.constant_2(2).forAll(_ != 2) == false)
   }
 
   // [CHAP-5][EXERCISE-08] implement infinite incremental Stream generator starting from given n
@@ -165,6 +172,10 @@ class StreamTest extends AnyFlatSpec with Matchers {
     assert(Stream.from(3).take(3).toList == List(3,4,5))
     assert(Stream.from(3).exists(_ == 3) == true)
     assert(Stream.from(3).forAll(_ < 3) == false)
+
+    assert(Stream.from_2(3).take(3).toList == List(3,4,5))
+    assert(Stream.from_2(3).exists(_ == 3) == true)
+    assert(Stream.from_2(3).forAll(_ < 3) == false)
   }
 
   // [CHAP-5][EXERCISE-9] implement infinite Stream of Fibonacci numbers
@@ -172,6 +183,10 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.fibs.take(0).toList shouldBe List()
     Stream.fibs.take(1).toList shouldBe List(0)
     Stream.fibs.take(8).toList shouldBe List(0,1,1,2,3,5,8,13)
+
+    Stream.fibs_2.take(0).toList shouldBe List()
+    Stream.fibs_2.take(1).toList shouldBe List(0)
+    Stream.fibs_2.take(8).toList shouldBe List(0,1,1,2,3,5,8,13)
   }
 
   // [CHAP-5][EXERCISE-10] implement unfold on Stream
