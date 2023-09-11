@@ -5,6 +5,8 @@ object Chapter5 {
   /** Book's example */
   def square(x: Double): Double = x * x
 
+  def nothing(x: ⇒ String): Unit = ()
+
   /** Book's example.
    * Unevaluated form of expression is called a thunk, represented as Function0. */
   def if2[A](cond: Boolean, onTrue: ⇒ A, onFalse: ⇒ A): A =
@@ -20,6 +22,8 @@ object Chapter5 {
 
   def main(args: Array[String]): Unit = {
     println("Chapter 5 - Strictness and laziness")
+
+    nothing(sys.error("should never be evaluated"))
 
     pair { println("pair's hi"); 1 + 41}
     pair2 { println("pair2's hi"); 1 + 41}

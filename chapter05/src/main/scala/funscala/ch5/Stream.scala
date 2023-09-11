@@ -168,7 +168,7 @@ object Stream {
       case (Some(sa1, ss1), Some(sa2, ss2)) ⇒ Some((sa1, sa2), (ss1.uncons, ss2.uncons))
     }
   })
-  
+
   /** [CHAP-5][EXERCISE-12] implement map, take, takeWhile, zip, zipAll in terms of unfold */
   def zipAll[A](s1: Stream[A], s2: Stream[A]): Stream[(Option[A], Option[A])] = unfold((s1.uncons,s2.uncons))(state ⇒ {
     state match {
@@ -178,6 +178,14 @@ object Stream {
       case (Some(sa1, ss1), Some(sa2, ss2)) ⇒ Some((Some(sa1), Some(sa2)), (ss1.uncons, ss2.uncons))
     }
   })
+
+  /** [CHAP-5][EXERCISE-13] implement startsWith on Streams */
+  def startsWith[A](s: Stream[A], s2: Stream[A]): Boolean = (s.uncons, s2.uncons) match {
+    case (None, None) ⇒ true
+    case (None, Some(_, _)) ⇒ false
+    case (Some(_, _), None) ⇒ true
+    case (Some(sh, st), Some(sh2, st2)) ⇒ if (sh != sh2) false else startsWith(st, st2)
+  }
 
 
 }

@@ -240,4 +240,27 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.zipAll(Stream(1, 2), Stream(4, 5, 6)).toList shouldBe List((Some(1), Some(4)), (Some(2), Some(5)), (None, Some(6)))
   }
 
+  "Stream" should "check if startsWith another Stream" in {
+    val l1 = Stream(1, 2, 3, 4)
+
+    Stream.startsWith(Stream.empty[Int], Stream.empty) shouldBe true
+    Stream.startsWith(Stream.empty, Stream(1)) shouldBe false
+    Stream.startsWith(Stream.empty, Stream(1, 2)) shouldBe false
+
+    Stream.startsWith(l1, Stream.empty) shouldBe true
+    Stream.startsWith(l1, Stream(1)) shouldBe true
+    Stream.startsWith(l1, Stream(1,2)) shouldBe true
+    Stream.startsWith(l1, Stream(1,2,3)) shouldBe true
+    Stream.startsWith(l1, Stream(1,2,3,4)) shouldBe true
+
+    Stream.startsWith(l1, Stream(1,3)) shouldBe false
+    Stream.startsWith(l1, Stream(1,2,4)) shouldBe false
+    Stream.startsWith(l1, Stream(1,2,3,5)) shouldBe false
+    Stream.startsWith(l1, Stream(1,2,3,4,5)) shouldBe false
+    Stream.startsWith(l1, Stream(2)) shouldBe false
+    Stream.startsWith(l1, Stream(3)) shouldBe false
+    Stream.startsWith(l1, Stream(4)) shouldBe false
+    Stream.startsWith(l1, Stream(4,5)) shouldBe false
+  }
+
 }
