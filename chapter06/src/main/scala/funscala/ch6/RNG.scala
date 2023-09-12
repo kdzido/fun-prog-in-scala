@@ -27,4 +27,7 @@ object RNG {
     val (next, rng2) = rng.nextInt
     if (next == Int.MinValue) positiveInt(rng2) else next.abs
   }
+
+  /** [CHAP-6][EXERCISE-02] implement random double */
+  def double(rng: RNG): Double = positiveInt(rng).toDouble * (1.0 / Int.MaxValue.toDouble + 1.0)
 }

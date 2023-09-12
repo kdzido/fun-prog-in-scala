@@ -22,6 +22,13 @@ object Chapter6 {
 
     val seedState = RNG.simple(1)
     println("randomPair: " + randomPair(seedState)._1)
+
+    println("Int.MaxValue " + Int.MaxValue)
+
+    val ratio = 1.0 / Int.MaxValue.toDouble
+    val cos = Int.MaxValue * ratio
+    println("double <0,1> " + ratio)
+    println("double <0,1> " + cos)
   }
 
 }
