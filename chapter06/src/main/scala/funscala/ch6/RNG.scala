@@ -21,4 +21,10 @@ object RNG {
         simple(seed2))
     }
   }
+
+  /** [CHAP-6][EXERCISE-01] implement random positiveInt */
+  def positiveInt(rng: RNG): Int = {
+    val (next, rng2) = rng.nextInt
+    if (next == Int.MinValue) positiveInt(rng2) else next.abs
+  }
 }
