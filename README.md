@@ -7,4 +7,5 @@ Learning Scala+FP+ScalaTest by exercising the _Functional Programming in Scala_ 
 2. Getting started
 3. Functional data structures
 4. Handling errors without Exceptions
-5. Stricktness and laziness
+5. Strictness and laziness
+6. Purely functional state

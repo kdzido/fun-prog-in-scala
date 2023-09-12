@@ -24,10 +24,13 @@ lazy val chapter04 = (project in file("chapter04"))
 lazy val chapter05 = (project in file("chapter05"))
   .settings(commonSettings)
 
+lazy val chapter06 = (project in file("chapter06"))
+  .settings(commonSettings)
+
 lazy val root = (project in file("."))
   .settings(
     name := "fp-in-scala-book",
     commonSettings,
     libraryDependencies += "org.openjdk.jol" % "jol-core" % "0.17",
   )
-  .aggregate(chapter01, chapter02, chapter03, chapter04, chapter05)
+  .aggregate(chapter01, chapter02, chapter03, chapter04, chapter05, chapter06)

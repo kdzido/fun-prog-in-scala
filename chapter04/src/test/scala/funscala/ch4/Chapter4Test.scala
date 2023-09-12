@@ -41,7 +41,7 @@ class Chapter4Test extends AnyFlatSpec with Matchers {
   }
 
   "Total mean_3 fn of empty List" should "return bogus value" in {
-    assert(Chapter4.mean_3(IndexedSeq()) == Left(""))
+    assert(Chapter4.mean_3(IndexedSeq()) == Left("mean of empty list!"))
   }
 
   "Total mean_3 fn of List" should "return mean of all elements" in {

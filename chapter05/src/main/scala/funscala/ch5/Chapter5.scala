@@ -1,4 +1,4 @@
-package funscala.ch4
+package funscala.ch5
 
 object Chapter5 {
 

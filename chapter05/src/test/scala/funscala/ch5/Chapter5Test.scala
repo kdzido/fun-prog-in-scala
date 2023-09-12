@@ -1,4 +1,4 @@
-package funscala.ch4
+package funscala.ch5
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
