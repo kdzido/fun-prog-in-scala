@@ -40,23 +40,28 @@ class RNGTest extends AnyFlatSpec with Matchers {
 
   it should "generate random pair (Int,Double)" in {
     val rng1 = RNG.simple(1)
-    val (_, rng2) = rng1.nextInt
 
     RNG.intDouble(rng1)._1 shouldBe (384748, 0.5360936464444239)
   }
 
   it should "generate random pair (Double, Int)" in {
     val rng1 = RNG.simple(1)
-    val (_, rng2) = rng1.nextInt
 
     RNG.doubleInt(rng1)._1 shouldBe (0.000179162249052507, 1151252339)
   }
 
   it should "generate random triple (Double, Double, Double)" in {
     val rng1 = RNG.simple(1)
-    val (_, rng2) = rng1.nextInt
 
     RNG.double3(rng1)._1 shouldBe (0.000179162249052507, 0.5360936464444239, 0.2558267895392267)
+  }
+
+  it should "generate random List[Int]" in {
+    val rng1 = RNG.simple(1)
+
+    RNG.ints(0)(rng1)._1 shouldBe List()
+    RNG.ints(1)(rng1)._1 shouldBe List(384748)
+    RNG.ints(5)(rng1)._1 shouldBe List(384748,1151252339,549383847,1612966641,883454042)
   }
 
 }

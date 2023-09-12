@@ -1,5 +1,7 @@
 package funscala.ch6
 
+import scala.annotation.tailrec
+
 trait Random {
   def nextInt: Int
   def nextBoolean: Boolean
@@ -55,4 +57,19 @@ object RNG {
     val (d3, rng4) = double(rng3)
     ((d1, d2, d3), rng4)
   }
+
+  /** [CHAP-6][EXERCISE-04] implement positiveInt */
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    @tailrec
+    def go(c: Int, acc: (List[Int], RNG), r: RNG): (List[Int], RNG) = {
+      if (c <= 0) acc
+      else {
+        val (i, rng2) = positiveInt(r)
+        go(c-1, (i :: acc._1, acc._2), rng2)
+      }
+    }
+    val reversed = go(count, (List[Int](), rng), rng)
+    (reversed._1.reverse, reversed._2)
+  }
+
 }
