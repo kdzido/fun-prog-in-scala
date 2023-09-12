@@ -111,7 +111,14 @@ sealed trait Stream[+A] {
       case (Some(a, t), true) ⇒ Some(cons(a, t), (t, true))
     }
   })
+
+  /** [CHAP-5][EXERCISE-15] (hard)(optional) generalize tails so that works like foldRight returning intermediate results */
+  def scanRight[B](z: ⇒ B)(f: (A, ⇒ B) ⇒ B): Stream[B] = tails
+    .map_2(a ⇒
+      a.foldRight(z)((a,b) ⇒ f(a,b)))
+
 }
+
 
 /** Book's example */
 object Stream {
@@ -199,6 +206,8 @@ object Stream {
   /** Book's example */
   def hasSubsequence[A](s: Stream[A], s2: Stream[A]): Boolean =
     s.tails.exists(startsWith(_, s2))
+
+
 
 }
 

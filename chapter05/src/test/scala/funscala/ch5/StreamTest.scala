@@ -240,7 +240,7 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.zipAll(Stream(1, 2), Stream(4, 5, 6)).toList shouldBe List((Some(1), Some(4)), (Some(2), Some(5)), (None, Some(6)))
   }
 
-  "Stream" should "check if startsWith another Stream" in {
+  "Stream startsWith" should "check if it starts with another Stream" in {
     val l1 = Stream(1, 2, 3, 4)
 
     Stream.startsWith(Stream.empty[Int], Stream.empty) shouldBe true
@@ -263,7 +263,7 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream.startsWith(l1, Stream(4,5)) shouldBe false
   }
 
-  "Stream" should "return Stream of all tails" in {
+  "Stream tails" should "return Stream of all tails" in {
     val l1 = Stream(1, 2, 3, 4)
 
     Stream.empty[Int].tails.uncons.isEmpty shouldBe false
@@ -274,7 +274,14 @@ class StreamTest extends AnyFlatSpec with Matchers {
     Stream(1,2,3).tails.map_2(_.toList).toList shouldBe List(List(1,2,3), List(2,3), List(3), List())
   }
 
-  "Stream" should "check if has subsequent Stream" in {
+  "Stream scanRight" should "return intermediate results as Stream" in {
+    Stream.empty[Int].scanRight(0)(_ + _).toList shouldBe List(0)
+    Stream(1).scanRight(0)(_ + _).toList shouldBe List(1,0)
+    Stream(1,2,3).scanRight(0)(_ + _).toList shouldBe List(6,5,3,0)
+  }
+
+
+  "Stream hasSubsequence" should "check if has subsequent Stream" in {
     val l1 = Stream(1, 2, 3, 4)
 
     Stream.hasSubsequence(Stream.empty[Int], Stream.empty[Int]) shouldBe true
