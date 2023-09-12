@@ -18,8 +18,8 @@ class RNGTest extends AnyFlatSpec with Matchers {
     val rng1 = RNG.simple(1)
     val (_, rng2) = rng1.nextInt
 
-    RNG.positiveInt(rng1) shouldBe 384748
-    RNG.positiveInt(rng2) shouldBe 1151252339
+    RNG.positiveInt(rng1)._1 shouldBe 384748
+    RNG.positiveInt(rng2)._1 shouldBe 1151252339
   }
 
   it should "normalize Int.MaxValue to Double <0.0, 1.0>" in {
@@ -34,8 +34,29 @@ class RNGTest extends AnyFlatSpec with Matchers {
     val rng1 = RNG.simple(1)
     val (_, rng2) = rng1.nextInt
 
-    RNG.double(rng1) shouldBe 0.000179162249052507
-    RNG.double(rng2) shouldBe 0.5360936464444239
+    RNG.double(rng1)._1 shouldBe 0.000179162249052507
+    RNG.double(rng2)._1 shouldBe 0.5360936464444239
+  }
+
+  it should "generate random pair (Int,Double)" in {
+    val rng1 = RNG.simple(1)
+    val (_, rng2) = rng1.nextInt
+
+    RNG.intDouble(rng1)._1 shouldBe (384748, 0.5360936464444239)
+  }
+
+  it should "generate random pair (Double, Int)" in {
+    val rng1 = RNG.simple(1)
+    val (_, rng2) = rng1.nextInt
+
+    RNG.doubleInt(rng1)._1 shouldBe (0.000179162249052507, 1151252339)
+  }
+
+  it should "generate random triple (Double, Double, Double)" in {
+    val rng1 = RNG.simple(1)
+    val (_, rng2) = rng1.nextInt
+
+    RNG.double3(rng1)._1 shouldBe (0.000179162249052507, 0.5360936464444239, 0.2558267895392267)
   }
 
 }

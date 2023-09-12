@@ -23,11 +23,36 @@ object RNG {
   }
 
   /** [CHAP-6][EXERCISE-01] implement random positiveInt */
-  def positiveInt(rng: RNG): Int = {
+  def positiveInt(rng: RNG): (Int, RNG) = {
     val (next, rng2) = rng.nextInt
-    if (next == Int.MinValue) positiveInt(rng2) else next.abs
+    if (next == Int.MinValue) positiveInt(rng2) else (next.abs, rng2)
   }
 
   /** [CHAP-6][EXERCISE-02] implement random double */
-  def double(rng: RNG): Double = positiveInt(rng).toDouble * (1.0 / Int.MaxValue.toDouble + 1.0)
+  def double(rng: RNG): (Double, RNG) = {
+    val (i1, rng2) = positiveInt(rng)
+    (i1.toDouble * (1.0 / Int.MaxValue.toDouble), rng2)
+  }
+
+  /** [CHAP-6][EXERCISE-03] implement random pairs (Int,Double), (Double,Int), triple (Double,Double,Double) */
+  def intDouble(rng: RNG): ((Int, Double), RNG) = {
+    val (i1, rng2) = positiveInt(rng)
+    val (d2, rng3) = double(rng2)
+    ((i1,d2), rng3)
+  }
+
+  /** [CHAP-6][EXERCISE-03] implement random pairs (Int,Double), (Double,Int), triple (Double,Double,Double) */
+  def doubleInt(rng: RNG): ((Double, Int), RNG) = {
+    val (d1, rng2) = double(rng)
+    val (i2, rng3) = positiveInt(rng2)
+    ((d1, i2), rng3)
+  }
+
+  /** [CHAP-6][EXERCISE-03] implement random pairs (Int,Double), (Double,Int), triple (Double,Double,Double) */
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = {
+    val (d1, rng2) = double(rng)
+    val (d2, rng3) = double(rng2)
+    val (d3, rng4) = double(rng3)
+    ((d1, d2, d3), rng4)
+  }
 }
