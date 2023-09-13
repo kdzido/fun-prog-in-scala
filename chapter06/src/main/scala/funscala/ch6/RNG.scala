@@ -2,11 +2,7 @@ package funscala.ch6
 
 import scala.annotation.tailrec
 
-trait Random {
-  def nextInt: Int
-  def nextBoolean: Boolean
-  def nextDouble: Double
-}
+type Rand[+A] = RNG ⇒ (A, RNG)
 
 /** Book's example */
 trait RNG {
@@ -24,11 +20,26 @@ object RNG {
     }
   }
 
+  /** Book's example */
+  val int: Rand[Int] = _.nextInt
+
+  /** Book's example */
+  def unit[A](a: A): Rand[A] = rng ⇒ (a, rng)
+
+  /** Book's example */
+  def map[A,B](s: Rand[A])(f: A ⇒ B): Rand[B] = rng ⇒ {
+    val (a, rng2) = s(rng)
+    (f(a), rng2)
+  }
+
   /** [CHAP-6][EXERCISE-01] implement random positiveInt */
   def positiveInt(rng: RNG): (Int, RNG) = {
     val (next, rng2) = rng.nextInt
     if (next == Int.MinValue) positiveInt(rng2) else (next.abs, rng2)
   }
+
+  /** [CHAP-6][EXERCISE-05] generate Int between 0 and n inclusive in terms of map */
+  def positiveMax(n: Int): Rand[Int] = RNG.map(positiveInt)(a ⇒ (a / (Int.MaxValue / (n+1))))
 
   /** [CHAP-6][EXERCISE-02] implement random double */
   def double(rng: RNG): (Double, RNG) = {
