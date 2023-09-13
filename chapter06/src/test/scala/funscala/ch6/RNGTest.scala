@@ -128,6 +128,10 @@ class RNGTest extends AnyFlatSpec with Matchers {
     RNG.ints(0)(rng1)._1 shouldBe List()
     RNG.ints(1)(rng1)._1 shouldBe List(384748)
     RNG.ints(5)(rng1)._1 shouldBe List(384748,1151252339,549383847,1612966641,883454042)
+
+    RNG.ints_2(0)(rng1)._1 shouldBe List()
+    RNG.ints_2(1)(rng1)._1 shouldBe List(384748)
+    RNG.ints_2(5)(rng1)._1 shouldBe List(384748,1151252339,549383847,1612966641,883454042)
   }
 
 }

@@ -56,13 +56,12 @@ object RNG {
     (l2._1.reverse, l2._2)
   }
 
-//    fs match {
-//    case Nil ⇒ RNG.unit(List())
-//    case h :: Nil ⇒
-//  }
-
   /** [CHAP-6][EXERCISE-01] implement random positiveInt */
   def positiveInt(rng: RNG): (Int, RNG) = {
+    val (next, rng2) = rng.nextInt
+    if (next == Int.MinValue) positiveInt(rng2) else (next.abs, rng2)
+  }
+  def positiveInt_2: Rand[Int] = rng ⇒ {
     val (next, rng2) = rng.nextInt
     if (next == Int.MinValue) positiveInt(rng2) else (next.abs, rng2)
   }
@@ -113,6 +112,13 @@ object RNG {
     }
     val reversed = go(count, (List[Int](), rng), rng)
     (reversed._1.reverse, reversed._2)
+  }
+
+
+  /** [CHAP-6][EXERCISE-08] (hard) reimplement ints with sequence of Rands */
+  def ints_2(count: Int): Rand[List[Int]] = /*rng ⇒ */{
+    val l =  List.fill(count)(RNG.map2(RNG.unit(0), positiveInt_2)((_, b) ⇒ b)).toList
+    RNG.sequence(l)
   }
 
 }
