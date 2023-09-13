@@ -33,6 +33,16 @@ class RNGTest extends AnyFlatSpec with Matchers {
     incr1(rng1)._1 shouldBe 384749
   }
 
+  it should "flatMap Rand into another Rand" in {
+    RNG.int(rng1)._1 shouldBe 384748
+
+    val incr1 = RNG.flatMap(RNG.positiveInt_2)(a ⇒ RNG.unit(a + 1))
+    val (v1, rng2) = incr1(rng1)
+    val (v2, rng3) = incr1(rng2)
+    v1 shouldBe 384749
+    v2 shouldBe 1151252340
+  }
+
   it should "map2 two Rands in another Rand" in {
     val (r1, rng2) = RNG.map2(RNG.positiveInt, RNG.unit(0))(_ + _)(rng1)
     val (r2, rng3) = RNG.map2(RNG.positiveInt, RNG.unit(0))(_ + _)(rng2)
@@ -64,6 +74,9 @@ class RNGTest extends AnyFlatSpec with Matchers {
 
     RNG.positiveInt(rng1)._1 shouldBe 384748
     RNG.positiveInt(rng2)._1 shouldBe 1151252339
+
+    RNG.positiveInt_3(rng1)._1 shouldBe 384748
+    RNG.positiveInt_3(rng2)._1 shouldBe 1151252339
   }
 
   it should "generate positive int between 0 and n inclusive" in {

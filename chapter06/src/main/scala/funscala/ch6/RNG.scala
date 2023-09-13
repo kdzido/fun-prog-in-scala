@@ -39,6 +39,12 @@ object RNG {
     (f(a,b), rng3)
   }
 
+  /** [CHAP-6][EXERCISE-09] implement flatMap and re-implement positiveInt */
+  def flatMap[A,B](f: Rand[A])(g: A ⇒ Rand[B]): Rand[B] = rng ⇒ {
+    val (a, rng2) = f(rng)
+    g(a)(rng2)
+  }
+
   /** [CHAP-6][EXERCISE-08] (hard) implement sequence of Rands */
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = rng ⇒ {
     @tailrec
@@ -65,6 +71,10 @@ object RNG {
     val (next, rng2) = rng.nextInt
     if (next == Int.MinValue) positiveInt(rng2) else (next.abs, rng2)
   }
+
+  def positiveInt_3: Rand[Int] =
+    flatMap(int)(a ⇒
+      if (a != Int.MinValue) RNG.unit(a.abs) else positiveInt_3)
 
   /** [CHAP-6][EXERCISE-05] generate Int between 0 and n inclusive in terms of map */
   def positiveMax(n: Int): Rand[Int] = RNG.map(positiveInt)(a ⇒ (a / (Int.MaxValue / (n+1))))
@@ -116,7 +126,7 @@ object RNG {
 
 
   /** [CHAP-6][EXERCISE-08] (hard) reimplement ints with sequence of Rands */
-  def ints_2(count: Int): Rand[List[Int]] = /*rng ⇒ */{
+  def ints_2(count: Int): Rand[List[Int]] = {
     val l =  List.fill(count)(RNG.map2(RNG.unit(0), positiveInt_2)((_, b) ⇒ b)).toList
     RNG.sequence(l)
   }
