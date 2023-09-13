@@ -26,18 +26,16 @@ object RNG {
   /** Book's example */
   def unit[A](a: A): Rand[A] = rng ⇒ (a, rng)
 
-  /** Book's example */
-  def map[A,B](s: Rand[A])(f: A ⇒ B): Rand[B] = rng ⇒ {
-    val (a, rng2) = s(rng)
-    (f(a), rng2)
-  }
+  /** [CHAP-6][EXERCISE-10] re-implement map, map2 in terms of flatMap */
+  def map[A,B](s: Rand[A])(f: A ⇒ B): Rand[B] =  flatMap(s)(a ⇒ RNG.unit(f(a)))
 
   /** [CHAP-6][EXERCISE-07] implement map2 */
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A,B) ⇒ C): Rand[C] = rng ⇒ {
-    val (a, rng2) = ra(rng)
-    val (b, rng3) = rb(rng2)
-    (f(a,b), rng3)
-  }
+  /** [CHAP-6][EXERCISE-10] re-implement map, map2 in terms of flatMap */
+  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A,B) ⇒ C): Rand[C] = flatMap(ra)(a ⇒ {
+    flatMap(rb)(b ⇒ RNG.unit(f(a, b)))  // this line's is same as map
+  })
+
+
 
   /** [CHAP-6][EXERCISE-09] implement flatMap and re-implement positiveInt */
   def flatMap[A,B](f: Rand[A])(g: A ⇒ Rand[B]): Rand[B] = rng ⇒ {
