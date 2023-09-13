@@ -39,6 +39,28 @@ object RNG {
     (f(a,b), rng3)
   }
 
+  /** [CHAP-6][EXERCISE-08] (hard) implement sequence of Rands */
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = rng ⇒ {
+    @tailrec
+    def go(l: List[Rand[A]], acc: List[A], r: RNG): (List[A], RNG) = {
+      l match {
+        case Nil ⇒ (acc, r)
+        case h :: t ⇒ {
+          val (h2: A, r2: RNG) = h(r)
+          go(t, h2 :: acc, r2)
+        }
+      }
+    }
+
+    val l2: (List[A], RNG) = go(fs, List[A](), rng)
+    (l2._1.reverse, l2._2)
+  }
+
+//    fs match {
+//    case Nil ⇒ RNG.unit(List())
+//    case h :: Nil ⇒
+//  }
+
   /** [CHAP-6][EXERCISE-01] implement random positiveInt */
   def positiveInt(rng: RNG): (Int, RNG) = {
     val (next, rng2) = rng.nextInt

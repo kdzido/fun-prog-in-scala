@@ -42,6 +42,15 @@ class RNGTest extends AnyFlatSpec with Matchers {
     RNG.map2(RNG.positiveInt, RNG.positiveInt)(_ + _)(rng1)._1 shouldBe (r1 + r2)
   }
 
+  it should "sequence Rands" in {
+    RNG.sequence(List())(rng1)._1 shouldBe List()
+    RNG.sequence(List(RNG.positiveInt))(rng1)._1 shouldBe List(384748)
+
+    val seq3 = RNG.sequence(List(RNG.positiveInt, RNG.positiveInt, RNG.positiveInt))(rng1)
+    seq3._1 shouldBe List(384748,1151252339,549383847)
+    RNG.positiveInt(seq3._2)._1 shouldBe 1612966641 // valid next random int
+  }
+
   it should "generate 2 random ints from seed" in {
     val (i1, rng2) = rng1.nextInt
     val (i2, _) = rng2.nextInt
