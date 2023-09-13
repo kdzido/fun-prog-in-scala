@@ -89,6 +89,9 @@ class RNGTest extends AnyFlatSpec with Matchers {
 
     RNG.double(rng1)._1 shouldBe 0.000179162249052507
     RNG.double(rng2)._1 shouldBe 0.5360936464444239
+
+    RNG.double_2(rng1)._1 shouldBe 0.000179162249052507
+    RNG.double_2(rng2)._1 shouldBe 0.5360936464444239
   }
 
   it should "generate random pair (Int,Double)" in {

@@ -47,6 +47,9 @@ object RNG {
     (i1.toDouble * (1.0 / Int.MaxValue.toDouble), rng2)
   }
 
+  /** [CHAP-6][EXERCISE-06] re-implement double in terms of map */
+  def double_2: Rand[Double] = RNG.map(positiveInt)(i ⇒ i.toDouble * (1.0 / Int.MaxValue.toDouble))
+
   /** [CHAP-6][EXERCISE-03] implement random pairs (Int,Double), (Double,Int), triple (Double,Double,Double) */
   def intDouble(rng: RNG): ((Int, Double), RNG) = {
     val (i1, rng2) = positiveInt(rng)
