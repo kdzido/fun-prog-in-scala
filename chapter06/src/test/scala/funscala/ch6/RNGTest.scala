@@ -16,8 +16,8 @@ class RNGTest extends AnyFlatSpec with Matchers {
     RNG.int.run(rng1)._1 shouldBe InitialRandomInt
 
     // when:
-    val (i1, rng2) = RNG.unit(1).run(rng1)
-    val (i2, rng3) = RNG.unit(1).run(rng2)
+    val (i1, rng2) = State.unit(1).run(rng1)
+    val (i2, rng3) = State.unit(1).run(rng2)
     // then:
     i1 shouldBe 1
     i2 shouldBe 1
@@ -29,14 +29,14 @@ class RNGTest extends AnyFlatSpec with Matchers {
   it should "map Rand into another Rand" in {
     RNG.int.run(rng1)._1 shouldBe 384748
 
-    val incr1 = RNG.map(RNG.int)(_ + 1)
+    val incr1 = RNG.int.map(_ + 1)
     incr1.run(rng1)._1 shouldBe 384749
   }
 
   it should "flatMap Rand into another Rand" in {
     RNG.int.run(rng1)._1 shouldBe 384748
 
-    val incr1 = RNG.flatMap(RNG.positiveInt_2)(a ⇒ RNG.unit(a + 1))
+    val incr1 = RNG.positiveInt_2.flatMap(a ⇒ State.unit(a + 1))
     val (v1, rng2) = incr1.run(rng1)
     val (v2, rng3) = incr1.run(rng2)
     v1 shouldBe 384749
@@ -44,19 +44,19 @@ class RNGTest extends AnyFlatSpec with Matchers {
   }
 
   it should "map2 two Rands in another Rand" in {
-    val (r1, rng2) = RNG.map2(RNG.positiveInt, RNG.unit(0))(_ + _).run(rng1)
-    val (r2, rng3) = RNG.map2(RNG.positiveInt, RNG.unit(0))(_ + _).run(rng2)
+    val (r1, rng2) = State.map2(RNG.positiveInt, State.unit(0))(_ + _).run(rng1)
+    val (r2, rng3) = State.map2(RNG.positiveInt, State.unit(0))(_ + _).run(rng2)
     r1 shouldBe 384748
     r2 shouldBe 1151252339
 
-    RNG.map2(RNG.positiveInt, RNG.positiveInt)(_ + _).run(rng1)._1 shouldBe (r1 + r2)
+    State.map2(RNG.positiveInt, RNG.positiveInt)(_ + _).run(rng1)._1 shouldBe (r1 + r2)
   }
 
   it should "sequence Rands" in {
-    RNG.sequence(List()).run(rng1)._1 shouldBe List()
-    RNG.sequence(List(RNG.positiveInt)).run(rng1)._1 shouldBe List(384748)
+    State.sequence(List()).run(rng1)._1 shouldBe List()
+    State.sequence(List(RNG.positiveInt)).run(rng1)._1 shouldBe List(384748)
 
-    val seq3 = RNG.sequence(List(RNG.positiveInt, RNG.positiveInt, RNG.positiveInt)).run(rng1)
+    val seq3 = State.sequence(List(RNG.positiveInt, RNG.positiveInt, RNG.positiveInt)).run(rng1)
     seq3._1 shouldBe List(384748,1151252339,549383847)
     RNG.positiveInt.run(seq3._2)._1 shouldBe 1612966641 // valid next random int
   }

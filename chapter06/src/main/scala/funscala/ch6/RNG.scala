@@ -9,6 +9,51 @@ trait RNG {
 
 //type Rand[+A] = RNG ⇒ (A, RNG)
 type Rand[+A] = State[RNG,A]
+//type State[S,+A] = S ⇒ (A,S)
+
+case class State[S,+A](run: S ⇒ (A,S)) {
+
+  /** [CHAP-6][EXERCISE-09] implement flatMap and re-implement positiveInt */
+  /** [CHAP-6][EXERCISE-11] generalize unit, map, map2, flatMap, sequence as State */
+  def flatMap[B](g: A ⇒ State[S, B]): State[S, B] = State(rng ⇒ {
+    val (a, rng2) = this.run(rng)
+    g(a).run(rng2)
+  })
+
+  /** [CHAP-6][EXERCISE-10] re-implement map, map2 in terms of flatMap */
+  /** [CHAP-6][EXERCISE-11] generalize unit, map, map2, flatMap, sequence as State */
+  def map[B](f: A ⇒ B): State[S,B] = flatMap(a ⇒ State.unit(f(a)))
+}
+
+object State {
+  /** [CHAP-6][EXERCISE-11] generalize unit, map, map2, flatMap, sequence as State */
+  def unit[S,A](a: A): State[S,A] = State(rng ⇒ (a, rng))
+
+  /** [CHAP-6][EXERCISE-07] implement map2 */
+  /** [CHAP-6][EXERCISE-10] re-implement map, map2 in terms of flatMap */
+  /** [CHAP-6][EXERCISE-11] generalize unit, map, map2, flatMap, sequence as State */
+  def map2[S,A, B, C](ra: State[S,A], rb: State[S,B])(f: (A, B) ⇒ C): State[S,C] = ra.flatMap(a ⇒ {
+    rb.flatMap(b ⇒ State.unit(f(a, b))) // this line's is same as map
+  })
+
+  /** [CHAP-6][EXERCISE-08] (hard) implement sequence of Rands */
+  /** [CHAP-6][EXERCISE-11] generalize unit, map, map2, flatMap, sequence as State */
+  def sequence[S,A](fs: List[State[S,A]]): State[S,List[A]] = State(rng ⇒ {
+    @tailrec
+    def go(l: List[State[S,A]], acc: List[A], r: S): (List[A], S) = {
+      l match {
+        case Nil ⇒ (acc, r)
+        case h :: t ⇒ {
+          val (h2: A, r2: S) = h.run(r)
+          go(t, h2 :: acc, r2)
+        }
+      }
+    }
+
+    val l2: (List[A], S) = go(fs, List[A](), rng)
+    (l2._1.reverse, l2._2)
+  })
+}
 
 object RNG {
   /** Book's example */
@@ -24,43 +69,6 @@ object RNG {
   /** Book's example */
   val int: Rand[Int] = State(_.nextInt)
 
-  /** Book's example */
-  def unit[A](a: A): Rand[A] = State(rng ⇒ (a, rng))
-
-  /** [CHAP-6][EXERCISE-10] re-implement map, map2 in terms of flatMap */
-  def map[A,B](s: Rand[A])(f: A ⇒ B): Rand[B] =  flatMap(s)(a ⇒ RNG.unit(f(a)))
-
-  /** [CHAP-6][EXERCISE-07] implement map2 */
-  /** [CHAP-6][EXERCISE-10] re-implement map, map2 in terms of flatMap */
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A,B) ⇒ C): Rand[C] = flatMap(ra)(a ⇒ {
-    flatMap(rb)(b ⇒ RNG.unit(f(a, b)))  // this line's is same as map
-  })
-
-
-
-  /** [CHAP-6][EXERCISE-09] implement flatMap and re-implement positiveInt */
-  def flatMap[A,B](f: Rand[A])(g: A ⇒ Rand[B]): Rand[B] = State(rng ⇒ {
-    val (a, rng2) = f.run(rng)
-    g(a).run(rng2)
-  })
-
-  /** [CHAP-6][EXERCISE-08] (hard) implement sequence of Rands */
-  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = State(rng ⇒ {
-    @tailrec
-    def go(l: List[Rand[A]], acc: List[A], r: RNG): (List[A], RNG) = {
-      l match {
-        case Nil ⇒ (acc, r)
-        case h :: t ⇒ {
-          val (h2: A, r2: RNG) = h.run(r)
-          go(t, h2 :: acc, r2)
-        }
-      }
-    }
-
-    val l2: (List[A], RNG) = go(fs, List[A](), rng)
-    (l2._1.reverse, l2._2)
-  })
-
   /** [CHAP-6][EXERCISE-01] implement random positiveInt */
   def positiveInt: Rand[Int] = State(rng ⇒ {
     val (next, rng2) = rng.nextInt
@@ -72,11 +80,11 @@ object RNG {
   })
 
   def positiveInt_3: Rand[Int] =
-    flatMap(int)(a ⇒
-      if (a != Int.MinValue) RNG.unit(a.abs) else positiveInt_3)
+    int.flatMap(a ⇒
+      if (a != Int.MinValue) State.unit(a.abs) else positiveInt_3)
 
   /** [CHAP-6][EXERCISE-05] generate Int between 0 and n inclusive in terms of map */
-  def positiveMax(n: Int): Rand[Int] = RNG.map(positiveInt_2)(a ⇒ (a / (Int.MaxValue / (n+1))))
+  def positiveMax(n: Int): Rand[Int] = positiveInt_2.map(a ⇒ (a / (Int.MaxValue / (n+1))))
 
   /** [CHAP-6][EXERCISE-02] implement random double */
   def double(rng: RNG): (Double, RNG) = {
@@ -85,7 +93,7 @@ object RNG {
   }
 
   /** [CHAP-6][EXERCISE-06] re-implement double in terms of map */
-  def double_2: Rand[Double] = RNG.map(positiveInt_2)(i ⇒ i.toDouble * (1.0 / Int.MaxValue.toDouble))
+  def double_2: Rand[Double] = positiveInt_2.map(i ⇒ i.toDouble * (1.0 / Int.MaxValue.toDouble))
 
   /** [CHAP-6][EXERCISE-03] implement random pairs (Int,Double), (Double,Int), triple (Double,Double,Double) */
   def intDouble(rng: RNG): ((Int, Double), RNG) = {
@@ -123,11 +131,10 @@ object RNG {
     (reversed._1.reverse, reversed._2)
   }
 
-
   /** [CHAP-6][EXERCISE-08] (hard) reimplement ints with sequence of Rands */
   def ints_2(count: Int): Rand[List[Int]] = {
-    val l =  List.fill(count)(RNG.map2(RNG.unit(0), positiveInt_2)((_, b) ⇒ b)).toList
-    RNG.sequence(l)
+    val l =  List.fill(count)(State.map2(State.unit(0), positiveInt_2)((_, b) ⇒ b)).toList
+    State.sequence(l)
   }
 
 }
