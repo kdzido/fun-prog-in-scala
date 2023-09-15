@@ -147,4 +147,14 @@ class RNGTest extends AnyFlatSpec with Matchers {
     RNG.ints_2(5).run(rng1)._1 shouldBe List(384748,1151252339,549383847,1612966641,883454042)
   }
 
+  it should "combine state actions with for comprehensions" in {
+    val l: State[RNG, List[Int]] = for {
+      x <- RNG.int
+      y <- RNG.int
+      xs <- RNG.ints_2(x % 5)
+    } yield xs.map(_ % y)
+
+    l.run(rng1)._1 shouldBe List(549383847, 461714302, 883454042)
+  }
+
 }
