@@ -157,4 +157,37 @@ class RNGTest extends AnyFlatSpec with Matchers {
     l.run(rng1)._1 shouldBe List(549383847, 461714302, 883454042)
   }
 
+  it should "modify state of state action" in {
+    // given:
+    val rng1 = RNG.simple(1)
+    val (randInt1, rng2) = RNG.int.run(rng1)
+    val (randInt2, rng3) = RNG.int.run(rng2)
+    // expect:
+    randInt1 shouldBe 384748
+    randInt2 shouldBe -1151252339
+
+    // when:
+    val result1: State[RNG, Int] = for {
+      x <- RNG.int
+    } yield x
+    // then: "random numbers computed based on original initial state rng1"
+    val (i1, outputRng2a) = result1.run(rng1)
+    val (i2, outputRng3a) = result1.run(outputRng2a)
+    i1 shouldBe randInt1
+    i2 shouldBe randInt2
+
+    // when:
+    val result2: State[RNG, Int] = for {
+      x <- RNG.int
+      _ <- RNG.int.modify(_ => rng1)  // reset to the initial state (rng1)
+      z <- RNG.int
+    } yield z
+    // then: "random numbers computed after reset to initial state rng1"
+    val (j1, outputRng2b) = result1.run(rng1)
+    val (j2, outputRng3b) = result1.run(outputRng2b)
+    j1 shouldBe randInt1
+    j2 shouldBe randInt2
+
+  }
+
 }

@@ -12,6 +12,20 @@ type Rand[+A] = State[RNG,A]
 //type State[S,+A] = S ⇒ (A,S)
 
 case class State[S,+A](run: S ⇒ (A,S)) {
+  /** [CHAP-6][EXERCISE-12] implement State's get and set for State.modify */
+  def get: State[S,S] = State(s ⇒ {
+    (s,s)
+  })
+
+  /** [CHAP-6][EXERCISE-12] implement State's get and set for State.modify */
+  def set(f: S): State[S, Unit] = State(s => {((),f)})
+
+  /** Book's example */
+  def modify(f: S ⇒ S): State[S, Unit] = for {
+    s <- get
+    _ <- set(f(s))
+  } yield ()
+
 
   /** [CHAP-6][EXERCISE-09] implement flatMap and re-implement positiveInt */
   /** [CHAP-6][EXERCISE-11] generalize unit, map, map2, flatMap, sequence as State */
