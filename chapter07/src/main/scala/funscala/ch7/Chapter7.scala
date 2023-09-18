@@ -9,7 +9,9 @@ object Chapter7 {
     if (as.size <= 1) as.headOption getOrElse(0)
     else {
       val (l,r) = as.splitAt(as.length/2)
-      sum(l) + sum(r)
+      val sumL: Par[Int] = Par.unit(sum(l))
+      val sumR: Par[Int] = Par.unit(sum(r))
+      Par.get(sumL) + Par.get(sumR)
     }
 
   @main def main(): Unit = {
