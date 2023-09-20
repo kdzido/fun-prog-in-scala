@@ -10,7 +10,7 @@ class Chapter7Test extends AnyFlatSpec with Matchers {
   }
 
   it should "sum elements of sequence" in {
-    Chapter7.sum(Vector(1,2,3)) shouldBe 6
+    Chapter7.sum(Vector(1,2,3)).get shouldBe 6
   }
 
 

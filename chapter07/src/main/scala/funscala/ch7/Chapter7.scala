@@ -4,14 +4,11 @@ package funscala.ch7
 object Chapter7 {
   val Truth = true
 
-  /** Book's example */
-  def sum(as: IndexedSeq[Int]): Int =
-    if (as.size <= 1) as.headOption getOrElse(0)
+  def sum(as: IndexedSeq[Int]): Par[Int] =
+    if (as.size <= 1) Par.unit(as.headOption getOrElse(0))
     else {
       val (l,r) = as.splitAt(as.length/2)
-      val sumL: Par[Int] = Par.unit(sum(l))
-      val sumR: Par[Int] = Par.unit(sum(r))
-      Par.get(sumL) + Par.get(sumR)
+      Par.map2(sum(l), sum(r))(_ + _)
     }
 
   @main def main(): Unit = {
