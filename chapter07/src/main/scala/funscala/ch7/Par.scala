@@ -20,4 +20,8 @@ object Par {
     val r = Par.get(b)
     Par.unit(f(l,r))
   }
+
+  def cancel(eventIfRunning: Boolean): Boolean = ???
+  def isDone(): Boolean = ???
+  def isCancelled(): Boolean = ???
 }
