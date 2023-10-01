@@ -8,7 +8,7 @@ object Chapter7 {
     if (as.size <= 1) Par.unit(as.headOption getOrElse(0))
     else {
       val (l,r) = as.splitAt(as.length/2)
-      Par.map2(sum(l), sum(r))(_ + _)
+      Par.map2(Par.fork(sum(l)), Par.fork(sum(r)))(_ + _)
     }
 
   @main def main(): Unit = {

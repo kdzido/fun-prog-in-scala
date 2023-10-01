@@ -1,17 +1,11 @@
 package funscala.ch7
 
-trait Par[A] {
-  def get: A
-}
+trait Par[A]
 
 object Par {
-  def unit[A](a: => A): Par[A] = new Par[A] {
-    lazy val value = a
+  def unit[A](a: => A): Par[A] = ???
 
-    override def get: A = value
-  }
-
-  def get[A](a: Par[A]): A = a.get
+  def get[A](a: Par[A]): A = ???
 
   /** [CHAP-7][EXERCISE-01] provide map2 signature
    */
@@ -20,6 +14,9 @@ object Par {
     val r = Par.get(b)
     Par.unit(f(l,r))
   }
+
+  /** Book's example */
+  def fork[A](a: ⇒ Par[A]): Par[A] = ???
 
   def cancel(eventIfRunning: Boolean): Boolean = ???
   def isDone(): Boolean = ???
