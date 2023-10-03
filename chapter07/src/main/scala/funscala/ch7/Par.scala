@@ -16,6 +16,9 @@ object Par {
   /** Book's example */
   def async[A](a: ⇒ A): Par[A] = fork(unit(a))
 
+  /** [CHAP-7][EXERCISE-04] impl asyncF using async */
+  def asyncF[A,B](f: A => B): A => Par[B] = a => async(f(a))
+
   def fork[A](a: ⇒ Par[A]): Par[A] = es2 ⇒ {
      a(es2)
   }
