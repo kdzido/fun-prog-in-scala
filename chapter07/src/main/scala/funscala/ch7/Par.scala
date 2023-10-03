@@ -23,6 +23,13 @@ object Par {
     e.submit(t)
   }
 
+  /** [CHAP-7][EXERCISE-06] implement parMap */
+  def parMap[A,B](l: List[A])(f: A => B): Par[List[B]] = e => {
+    val c = new Callable[List[B]]():
+      override def call(): List[B] = l.map(f).toList
+    e.submit(c)
+  }
+
   /** [CHAP-7][EXERCISE-05] (optional) implement product and map as primitives, define map2 in terms of them */
   def product[A,B](fa: Par[A], fb: Par[B]): Par[(A,B)] = e => {
     val a = fa(e).get()
