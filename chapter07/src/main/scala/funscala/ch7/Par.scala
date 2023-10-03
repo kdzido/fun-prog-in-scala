@@ -7,6 +7,14 @@ import java.util.concurrent.{Callable, ExecutorService, Future}
 type Par[A] = ExecutorService ⇒ Future[A]
 
 object Par {
+  /** Book's example */
+  def sortPar(l: Par[List[Int]]): Par[List[Int]] =
+    Par.map2(l, unit(()))((a, _) => a.sorted)
+
+  /** Book's example */
+  def map[A, B](a: Par[A])(f: A => B): Par[B] =
+    Par.map2(a, unit(()))((a,_) => f(a))
+
   def unit[A](a: A): Par[A] = {
     val c = new Callable[A]():
       override def call(): A = a
@@ -31,6 +39,7 @@ object Par {
     val c: C = f(l.get(), r.get())
     Par.unit(c)(es)
   }
+
 
   /** [CHAP-7][EXERCISE-03] impl Par representation */
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)

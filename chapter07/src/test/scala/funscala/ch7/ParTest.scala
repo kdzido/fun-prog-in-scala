@@ -26,4 +26,16 @@ class ParTest extends AnyFlatSpec with Matchers {
     Par.run(pool)(Par.asyncF((a: Int) => ("_" + a.toString))(2)).get() shouldBe "_2"
   }
 
+  it should "sort list in Par" in {
+    val lp = Par.unit(List(2,1,5,4,3))
+    Par.run(direct)(Par.sortPar(lp)).get() shouldBe List(1,2,3,4,5)
+    Par.run(pool)(Par.sortPar(lp)).get() shouldBe List(1,2,3,4,5)
+  }
+
+  it should "map list into sorted list" in {
+    val lp = Par.unit(List(2,1,5,4,3))
+    Par.run(direct)(Par.map(lp)(_.sorted)).get() shouldBe List(1,2,3,4,5)
+    Par.run(pool)(Par.map(lp)(_.sorted)).get() shouldBe List(1,2,3,4,5)
+  }
+
 }
