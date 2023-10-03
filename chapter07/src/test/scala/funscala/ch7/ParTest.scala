@@ -21,6 +21,11 @@ class ParTest extends AnyFlatSpec with Matchers {
     Par.run(pool)(Par.map2(Par.unit(1), Par.unit(2))(_ + _)).get() shouldBe 3
   }
 
+  it should "map2_1 two Pars" in {
+    Par.run(direct)(Par.map2_1(Par.unit(1), Par.unit(2))(_ + _)).get() shouldBe 3
+    Par.run(pool)(Par.map2_1(Par.unit(1), Par.unit(2))(_ + _)).get() shouldBe 3
+  }
+
   it should "convert function into async function" in {
     Par.run(direct)(Par.asyncF((a: Int) => ("_" + a.toString))(2)).get() shouldBe "_2"
     Par.run(pool)(Par.asyncF((a: Int) => ("_" + a.toString))(2)).get() shouldBe "_2"
@@ -36,6 +41,19 @@ class ParTest extends AnyFlatSpec with Matchers {
     val lp = Par.unit(List(2,1,5,4,3))
     Par.run(direct)(Par.map(lp)(_.sorted)).get() shouldBe List(1,2,3,4,5)
     Par.run(pool)(Par.map(lp)(_.sorted)).get() shouldBe List(1,2,3,4,5)
+  }
+
+  it should "map_1 list into sorted list" in {
+    val lp = Par.unit(List(2,1,5,4,3))
+    Par.run(direct)(Par.map_1(lp)(_.sorted)).get() shouldBe List(1,2,3,4,5)
+    Par.run(pool)(Par.map_1(lp)(_.sorted)).get() shouldBe List(1,2,3,4,5)
+  }
+
+  it should "create product of two Pars" in {
+    val pa = Par.unit(1)
+    val pb = Par.unit(2)
+    Par.run(direct)(Par.product(pa, pb)).get shouldBe (1,2)
+    Par.run(pool)(Par.product(pa, pb)).get shouldBe (1,2)
   }
 
 }

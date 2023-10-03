@@ -15,6 +15,23 @@ object Par {
   def map[A, B](a: Par[A])(f: A => B): Par[B] =
     Par.map2(a, unit(()))((a,_) => f(a))
 
+  /** [CHAP-7][EXERCISE-05] (optional) implement product and map as primitives, define map2 in terms of them */
+  def map_1[A, B](fa: Par[A])(f: A => B): Par[B] = e => {
+    val a = fa(e).get
+    val t = new Callable[B]():
+      override def call(): B = f(a)
+    e.submit(t)
+  }
+
+  /** [CHAP-7][EXERCISE-05] (optional) implement product and map as primitives, define map2 in terms of them */
+  def product[A,B](fa: Par[A], fb: Par[B]): Par[(A,B)] = e => {
+    val a = fa(e).get()
+    val b = fb(e).get()
+    val t = new Callable[(A,B)]():
+      override def call(): (A,B) = (a,b)
+    e.submit(t)
+  }
+
   def unit[A](a: A): Par[A] = {
     val c = new Callable[A]():
       override def call(): A = a
@@ -40,6 +57,9 @@ object Par {
     Par.unit(c)(es)
   }
 
+  /** [CHAP-7][EXERCISE-05] (optional) implement product and map as primitives, define map2 in terms of them */
+  def map2_1[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] =
+    map_1(product(a, b))((tup) => f(tup._1, tup._2))
 
   /** [CHAP-7][EXERCISE-03] impl Par representation */
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
