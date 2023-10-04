@@ -55,6 +55,22 @@ class ParTest extends AnyFlatSpec with Matchers {
     Par.run(pool)(Par.parMap(lp)(_.toString)).get() shouldBe List("2","1","5","4","3")
   }
 
+  it should "parMap_1 list into sorted list" in {
+    val lp = List(2,1,5,4,3)
+    Par.run(direct)(Par.parMap_1(lp)(_.toString)).get() shouldBe List("2","1","5","4","3")
+    Par.run(pool)(Par.parMap_1(lp)(_.toString)).get() shouldBe List("2","1","5","4","3")
+  }
+
+  it should "sequence List of Pars" in {
+    Par.run(direct)(Par.sequence(List())).get() shouldBe List()
+    Par.run(direct)(Par.sequence(List(Par.unit(1)))).get() shouldBe List(1)
+    Par.run(direct)(Par.sequence(List(Par.unit(1), Par.unit(2), Par.unit(3)))).get() shouldBe List(1,2,3)
+
+    Par.run(pool)(Par.sequence(List())).get() shouldBe List()
+    Par.run(pool)(Par.sequence(List(Par.unit(1)))).get() shouldBe List(1)
+    Par.run(pool)(Par.sequence(List(Par.unit(1), Par.unit(2), Par.unit(3)))).get() shouldBe List(1,2,3)
+  }
+
   it should "create product of two Pars" in {
     val pa = Par.unit(1)
     val pb = Par.unit(2)

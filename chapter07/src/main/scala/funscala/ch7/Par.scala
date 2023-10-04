@@ -29,6 +29,22 @@ object Par {
       override def call(): List[B] = l.map(f).toList
     e.submit(c)
   }
+  def parMap_1[A,B](l: List[A])(f: A => B): Par[List[B]] = {
+    val fbs: List[Par[B]] = l.map(asyncF(f))
+    sequence(fbs)
+  }
+
+  /** [CHAP-7][EXERCISE-06] (hard) implement sequence */
+  def sequence[A](l: List[Par[A]]): Par[List[A]] = e => {
+    def go(left: List[Par[A]], acc: List[A]): List[A] = left match {
+      case Nil => acc
+      case h :: t => go(t, h(e).get() :: acc)
+    }
+
+    val c = new Callable[List[A]]():
+      override def call(): List[A] = go(l, Nil).reverse
+    e.submit(c)
+  }
 
   /** [CHAP-7][EXERCISE-05] (optional) implement product and map as primitives, define map2 in terms of them */
   def product[A,B](fa: Par[A], fb: Par[B]): Par[(A,B)] = e => {
