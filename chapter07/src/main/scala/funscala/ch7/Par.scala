@@ -34,6 +34,13 @@ object Par {
     sequence(fbs)
   }
 
+  /** [CHAP-7][EXERCISE-08] implement parFilter */
+  def parFilter[A](l: List[A])(f: A => Boolean): Par[List[A]] = e => {
+    val c = new Callable[List[A]]():
+      override def call(): List[A] = l.filter(f)
+    e.submit(c)
+  }
+
   /** [CHAP-7][EXERCISE-06] (hard) implement sequence */
   def sequence[A](l: List[Par[A]]): Par[List[A]] = e => {
     def go(left: List[Par[A]], acc: List[A]): List[A] = left match {

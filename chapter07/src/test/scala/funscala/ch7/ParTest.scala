@@ -61,6 +61,12 @@ class ParTest extends AnyFlatSpec with Matchers {
     Par.run(pool)(Par.parMap_1(lp)(_.toString)).get() shouldBe List("2","1","5","4","3")
   }
 
+  it should "parFilter list " in {
+    val lp = List(2,1,5,4,3)
+    Par.run(direct)(Par.parFilter(lp)(_ % 2 == 0)).get() shouldBe List(2,4)
+    Par.run(pool)(Par.parFilter(lp)(_ % 2 == 0)).get() shouldBe List(2,4)
+  }
+
   it should "sequence List of Pars" in {
     Par.run(direct)(Par.sequence(List())).get() shouldBe List()
     Par.run(direct)(Par.sequence(List(Par.unit(1)))).get() shouldBe List(1)
