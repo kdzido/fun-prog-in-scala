@@ -86,12 +86,15 @@ class ParTest extends AnyFlatSpec with Matchers {
 
   // Book's example of identity law: map(unit(1))(_ + 1) == unit(2)
   "identity law" should "enforce equivalence of mapping over a unit with the resulting unit" in {
-    val exprLeft: Par[Int] = Par.map(Par.unit(1))(_ + 1)
-    val exprRight: Par[Int] = Par.unit(2)
-
-    isEquivalent(direct)(exprLeft, exprRight) shouldBe true
+    isEquivalent(direct)(Par.map(Par.unit(1))(_ + 1), Par.unit(2)) shouldBe true
   }
 
+  // Book's example of identity law: map(unit(x))(f) == unit(f(x))
+  it should "hold for any choice of x and f" in {
+    val f: Int => Int = _ + 1
+    val x = 1
+    isEquivalent(direct)(Par.map(Par.unit(x))(f), Par.unit(f(x))) shouldBe true
+  }
 
   // Helpers
   def isEquivalent[A](e: ExecutorService)(p: Par[A], p2: Par[A]): Boolean = p(e).get == p2(e).get
