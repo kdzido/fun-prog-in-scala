@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-import java.util.concurrent.Executors
+import java.util.concurrent.{ExecutorService, Executors}
 
 class ParTest extends AnyFlatSpec with Matchers {
 
@@ -83,5 +83,17 @@ class ParTest extends AnyFlatSpec with Matchers {
     Par.run(direct)(Par.product(pa, pb)).get shouldBe (1,2)
     Par.run(pool)(Par.product(pa, pb)).get shouldBe (1,2)
   }
+
+  // Book's example of identity law: map(unit(1))(_ + 1) == unit(2)
+  "identity law" should "enforce equivalence of mapping over a unit with the resulting unit" in {
+    val exprLeft: Par[Int] = Par.map(Par.unit(1))(_ + 1)
+    val exprRight: Par[Int] = Par.unit(2)
+
+    isEquivalent(direct)(exprLeft, exprRight) shouldBe true
+  }
+
+
+  // Helpers
+  def isEquivalent[A](e: ExecutorService)(p: Par[A], p2: Par[A]): Boolean = p(e).get == p2(e).get
 
 }

@@ -2,11 +2,13 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "3.2.2"
 
 lazy val scalatestVersion = "3.2.16"
+lazy val scalacheckVersion = "3.2.17.0"
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "com.google.guava" % "guava" % "32.1.2-jre",
     "org.scalactic" %% "scalactic" % scalatestVersion,
-    "org.scalatest" %% "scalatest" % scalatestVersion % Test
+    "org.scalatest" %% "scalatest" % scalatestVersion % Test,
+    "org.scalatestplus" %% "scalacheck-1-17" % scalacheckVersion % Test
   )
 )
 
