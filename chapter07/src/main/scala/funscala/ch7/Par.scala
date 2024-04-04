@@ -41,7 +41,7 @@ object Par {
     e.submit(c)
   }
 
-  /** [CHAP-7][EXERCISE-06] (hard) implement sequence */
+  /** [CHAP-7][EXERCISE-07] (hard) implement sequence */
   def sequence[A](l: List[Par[A]]): Par[List[A]] = e => {
     def go(left: List[Par[A]], acc: List[A]): List[A] = left match {
       case Nil => acc
