@@ -55,10 +55,8 @@ object Par {
 
   /** [CHAP-7][EXERCISE-05] (optional) implement product and map as primitives, define map2 in terms of them */
   def product[A,B](fa: Par[A], fb: Par[B]): Par[(A,B)] = e => {
-    val a = fa(e).get()
-    val b = fb(e).get()
     val t = new Callable[(A,B)]():
-      override def call(): (A,B) = (a,b)
+      override def call(): (A,B) = (fa(e).get(), fb(e).get())
     e.submit(t)
   }
 
