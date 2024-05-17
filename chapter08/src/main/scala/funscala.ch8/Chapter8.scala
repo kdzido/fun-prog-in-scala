@@ -1,5 +1,7 @@
 package funscala.ch8
 
+import funscala.ch6.{RNG, State}
+
 
 trait Prop {
   def check: Boolean
@@ -10,6 +12,17 @@ trait Prop {
   }
 
   private def and(b1: Boolean, b2: Boolean): Boolean = b1 && b2
+}
+
+type Gen[A] = State[RNG, A]
+
+object Gen {
+  /** [CHAP-8][EXERCISE-4] implement Gen.choose */
+  def choose(start: Int, stopExclusive: Int): Gen[Int] = {
+    val delta = if (stopExclusive > start) stopExclusive - start else 1
+     RNG.positiveMax(delta - 1)
+  .map(s ⇒ s + start)
+  }
 }
 
 case object AlwaysTrue extends Prop {

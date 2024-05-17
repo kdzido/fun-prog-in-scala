@@ -34,6 +34,7 @@ lazy val chapter07 = (project in file("chapter07"))
   .settings(commonSettings)
 
 lazy val chapter08 = (project in file("chapter08"))
+  .dependsOn(chapter06)
   .settings(commonSettings)
 
 lazy val root = (project in file("."))
